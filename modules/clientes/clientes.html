@@ -1,0 +1,164 @@
+
+<div class="clientes-module">
+    <!-- Header del módulo -->
+    <div class="module-header">
+        <div class="module-actions">
+            <button id="btn-nuevo-cliente" class="btn-primary">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                    <line x1="12" y1="12" x2="12" y2="18"></line>
+                    <line x1="9" y1="15" x2="15" y2="15"></line>
+                </svg>
+                <span>Nuevo Cliente</span>
+            </button>
+            
+            <div class="search-container">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="search-clientes" class="search-input" placeholder="Buscar cliente por nombre o teléfono...">
+            </div>
+        </div>
+
+        <div class="module-filters">
+            <select id="filter-tipo" class="filter-select">
+                <option value="todos">Todos los tipos</option>
+                <option value="credito">Solo crédito</option>
+                <option value="efectivo">Solo efectivo</option>
+            </select>
+            
+            <select id="filter-orden" class="filter-select">
+                <option value="reciente">Más recientes</option>
+                <option value="nombre-asc">Nombre A-Z</option>
+                <option value="nombre-desc">Nombre Z-A</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Lista de clientes -->
+    <div id="clientes-container" class="clientes-grid">
+        <!-- Se llenará dinámicamente -->
+    </div>
+
+    <!-- Estado vacío -->
+    <div id="empty-state" class="empty-state" style="display: none;">
+        <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        <h3>No hay clientes registrados</h3>
+        <p>Agrega tu primer cliente para comenzar</p>
+        <button class="btn-primary" onclick="clientesModule.openModal()">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            Crear Cliente
+        </button>
+    </div>
+
+    <!-- Modal para crear/editar cliente -->
+    <div id="modal-cliente" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">
+                    <svg style="width: 24px; height: 24px; display: inline; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                        <line x1="12" y1="12" x2="12" y2="18"></line>
+                        <line x1="9" y1="15" x2="15" y2="15"></line>
+                    </svg>Nuevo Cliente
+                </h2>
+                <button id="modal-close" class="modal-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <form id="form-cliente" class="modal-body">
+                <div class="form-group">
+                    <label for="cliente-nombre">
+                        Nombre Completo <span class="required">*</span>
+                    </label>
+                    <input type="text" id="cliente-nombre" required placeholder="Ej: Juan Pérez García">
+                    <small class="form-hint">Mínimo 3 caracteres</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="cliente-telefono">Teléfono (Opcional)</label>
+                    <input type="tel" id="cliente-telefono" placeholder="Ej: 3331234567" maxlength="10">
+                    <small class="form-hint">10 dígitos sin espacios</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="cliente-email">Email (Opcional)</label>
+                    <input type="email" id="cliente-email" placeholder="Ej: cliente@email.com">
+                    <small class="form-hint">Para enviar facturas o notificaciones</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="cliente-tipo">
+                        Tipo de Cliente <span class="required">*</span>
+                    </label>
+                    <select id="cliente-tipo" required>
+                        <option value="efectivo">💵 Efectivo (solo contado)</option>
+                        <option value="credito">💳 Crédito (puede comprar a crédito)</option>
+                    </select>
+                    <small class="form-hint">Los clientes a crédito aparecerán en el módulo de créditos</small>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" id="btn-cancelar" class="btn-secondary">
+                        Cancelar
+                    </button>
+                    <button type="submit" id="btn-guardar" class="btn-primary">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        <span id="btn-guardar-text">Guardar Cliente</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de detalle del cliente -->
+    <div id="modal-detalle" class="modal">
+        <div class="modal-content modal-detalle">
+            <div class="modal-header">
+                <h2>
+                    <svg style="width: 24px; height: 24px; display: inline; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>Detalle del Cliente
+                </h2>
+                <button id="modal-detalle-close" class="modal-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div id="detalle-content" class="modal-body">
+                <!-- Se llenará dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loading-overlay-clientes" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Cargando...</p>
+        </div>
+    </div>
+</div>

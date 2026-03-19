@@ -1,0 +1,133 @@
+
+<!-- Modales del Módulo de Pagos -->
+
+<!-- Modal: Nuevo Movimiento -->
+<div id="modal-movimiento" class="modal-pagos">
+    <div class="modal-pagos-wrapper">
+        <div class="modal-pagos-content">
+            <div class="modal-pagos-header">
+                <h3 id="modal-movimiento-title">Nuevo Movimiento</h3>
+                <button class="modal-pagos-close" id="modal-movimiento-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-pagos-body">
+                <form id="form-movimiento">
+                    <input type="hidden" id="tipo-movimiento">
+
+                    <div class="form-group">
+                        <label>Concepto *</label>
+                        <input type="text" id="concepto-movimiento" class="input-field" required placeholder="Ej: Compra de insumos, Servicios, etc.">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Monto *</label>
+                        <input type="number" id="monto-movimiento" class="input-field" step="0.01" min="0" required placeholder="0.00">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select id="categoria-movimiento" class="select-input" required>
+                            <option value="">Seleccionar categoría</option>
+                            <option value="venta-dia">Venta del día</option>
+                            <option value="transferencia-venta">Transferencia (Venta)</option>
+                            <option value="tarjeta-venta">Tarjeta (Venta)</option>
+                            <option value="retiro-efectivo">Retiro de efectivo</option>
+                            <option value="compra-mercancia">Compra de mercancía</option>
+                            <option value="servicios">Servicios (luz, agua, etc.)</option>
+                            <option value="renta">Renta</option>
+                            <option value="mantenimiento">Mantenimiento</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Observaciones</label>
+                        <textarea id="observaciones-movimiento" class="textarea-field" rows="3" placeholder="Detalles adicionales..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-pagos-footer">
+                <button type="button" class="btn-secondary" id="btn-cancelar-movimiento">Cancelar</button>
+                <button type="submit" form="form-movimiento" class="btn-primary">Registrar Movimiento</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Multipago de Nómina NUEVO -->
+<div id="modal-pago-nomina" class="modal-pagos">
+    <div class="modal-pagos-wrapper">
+        <div class="modal-pagos-content" style="max-height: 90vh; display: flex; flex-direction: column;">
+            <div class="modal-pagos-header">
+                <h3>Multipago de Nómina</h3>
+                <button class="modal-pagos-close" id="modal-nomina-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-pagos-body" style="flex: 1; overflow-y: auto;">
+                <!-- Tabla de pagos agregados -->
+                <div class="tabla-pagos-multipago">
+                    <table style="font-size: 0.9rem;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #007AFF;">
+                                <th style="text-align: left; padding: 8px;">Empleado</th>
+                                <th style="text-align: left; padding: 8px;">Fecha</th>
+                                <th style="text-align: right; padding: 8px;">Monto</th>
+                                <th style="text-align: center; padding: 8px;">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-pagos-agregados">
+                            <tr style="text-align: center; color: #6D6D80; padding: 20px;">
+                                <td colspan="4">Sin pagos agregados</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Formulario para agregar pagos -->
+                <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #E8E8F0;">
+                    <h4 style="margin: 0 0 16px 0; font-size: 0.95rem;">Agregar Pago</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="form-group">
+                            <label style="font-size: 0.85rem;">Empleado *</label>
+                            <select id="empleado-multipago-select" class="select-input" style="font-size: 0.9rem;">
+                                <option value="">Seleccionar empleado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size: 0.85rem;">Fecha *</label>
+                            <input type="date" id="fecha-multipago-input" class="input-field" style="font-size: 0.9rem;">
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size: 0.85rem;">Monto *</label>
+                            <input type="number" id="monto-multipago-input" class="input-field" step="0.01" min="0" placeholder="0.00" style="font-size: 0.9rem;">
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size: 0.85rem;">&nbsp;</label>
+                            <button type="button" id="btn-agregar-pago" style="background: #007AFF; color: white; border: none; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600;">
+                                + Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumen total -->
+                <div style="margin-top: 16px; padding: 12px; background: #F5F5FA; border-radius: 8px; text-align: right;">
+                    <span style="font-weight: 600;">Total a Pagar: </span>
+                    <span id="total-multipago" style="color: #007AFF; font-weight: 700; font-size: 1.1rem;">$0.00</span>
+                </div>
+            </div>
+            <div class="modal-pagos-footer">
+                <button type="button" class="btn-secondary" id="btn-cancelar-nomina">Cancelar</button>
+                <button type="button" id="btn-guardar-multipago" class="btn-primary" disabled>Guardar Pagos</button>
+            </div>
+        </div>
+    </div>
+</div>

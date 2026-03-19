@@ -1,0 +1,272 @@
+<!-- Módulo de Pagos - Gestión Financiera -->
+<div class="pagos-module">
+    <!-- Sistema de Pestañas Estilo Apple -->
+    <div class="pagos-tabs-wrapper">
+        <div class="pagos-tabs">
+            <button class="pagos-tab active" data-tab="resumen">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+                <span class="tab-text">Caja Mayor</span>
+            </button>
+            <button class="pagos-tab" data-tab="historial">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+                <span class="tab-text">Historial</span>
+            </button>
+            <button class="pagos-tab" data-tab="nomina">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span class="tab-text">Nómina</span>
+            </button>
+            <div class="tab-indicator"></div>
+        </div>
+    </div>
+
+    <!-- PESTAÑA 1: RESUMEN / CAJA MAYOR -->
+    <div id="tab-resumen" class="pagos-tab-content active">
+        <!-- Tarjeta Principal: Total Efectivo -->
+        <div class="efectivo-principal-card">
+            <div class="efectivo-header">
+                <div class="efectivo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                        <line x1="1" y1="10" x2="23" y2="10"></line>
+                    </svg>
+                </div>
+                <h2>Efectivo Total en Caja Mayor</h2>
+            </div>
+            <div class="efectivo-amount" id="efectivo-total">$0.00</div>
+            <div class="efectivo-subtitle">Saldo disponible</div>
+        </div>
+
+        <!-- Controles de Ingreso/Egreso -->
+        <div class="controles-movimiento">
+            <button class="btn-movimiento btn-ingreso" id="btn-nuevo-ingreso">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                    <polyline points="17 6 23 6 23 12"></polyline>
+                </svg>
+                <span>Nuevo Ingreso</span>
+            </button>
+            <button class="btn-movimiento btn-egreso" id="btn-nuevo-egreso">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline>
+                    <polyline points="17 18 23 18 23 12"></polyline>
+                </svg>
+                <span>Nuevo Egreso</span>
+            </button>
+        </div>
+
+        <!-- Estadísticas rápidas -->
+        <div class="stats-pagos">
+            <div class="stat-card stat-ingresos">
+                <div class="stat-icon">📈</div>
+                <div class="stat-info">
+                    <span class="stat-label">Total Ingresos</span>
+                    <span class="stat-value" id="total-ingresos">$0.00</span>
+                </div>
+            </div>
+            <div class="stat-card stat-egresos">
+                <div class="stat-icon">📉</div>
+                <div class="stat-info">
+                    <span class="stat-label">Total Egresos</span>
+                    <span class="stat-value" id="total-egresos">$0.00</span>
+                </div>
+            </div>
+            <div class="stat-card stat-nomina">
+                <div class="stat-icon">👥</div>
+                <div class="stat-info">
+                    <span class="stat-label">Pagos Nómina</span>
+                    <span class="stat-value" id="total-nomina">$0.00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Últimos Movimientos -->
+        <div class="ultimos-movimientos">
+            <h3>Últimos Movimientos</h3>
+            <div class="movimientos-list" id="ultimos-movimientos-list">
+                <!-- Se llenarán dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- PESTAÑA 2: HISTORIAL DE MOVIMIENTOS -->
+    <div id="tab-historial" class="pagos-tab-content">
+        <div class="filtros-historial">
+            <div class="filter-group">
+                <label>Tipo de Movimiento</label>
+                <select id="filter-tipo-movimiento" class="filter-select">
+                    <option value="">Todos</option>
+                    <option value="ingreso">Ingresos</option>
+                    <option value="egreso">Egresos</option>
+                    <option value="nomina">Pagos Nómina</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Período</label>
+                <select id="filter-periodo" class="filter-select">
+                    <option value="hoy">Hoy</option>
+                    <option value="semana">Esta Semana</option>
+                    <option value="mes">Este Mes</option>
+                    <option value="todos">Todos</option>
+                </select>
+            </div>
+            <div class="search-container">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="search-historial" placeholder="Buscar movimiento..." class="search-input">
+            </div>
+        </div>
+
+        <div class="tabla-historial-container">
+            <table class="tabla-historial">
+                <thead>
+                    <tr>
+                        <th>
+                            <div>
+                                <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>Fecha</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div>
+                                <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                                    <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                                </svg>
+                                <span>Tipo</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div>
+                                <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
+                                <span>Concepto</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div>
+                                <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                                <span>Monto</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div>
+                                <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                <span>Responsable</span>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="historial-movimientos-body">
+                    <!-- Se llenará dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PESTAÑA 3: NÓMINA -->
+    <div id="tab-nomina" class="pagos-tab-content">
+        <div class="nomina-header">
+            <h2>Gestión de Nómina</h2>
+            <div class="nomina-stats">
+                <div class="nomina-stat">
+                    <span class="label">Pagos este Mes:</span>
+                    <span class="value" id="pagos-mes">$0.00</span>
+                </div>
+                <div class="nomina-stat">
+                    <span class="label">Empleados:</span>
+                    <span class="value" id="total-empleados">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendario Profesional -->
+        <div class="calendario-container">
+            <div class="calendario-header">
+                <button class="btn-calendario" id="btn-mes-anterior">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                <h3 id="calendario-mes-actual">Enero 2024</h3>
+                <button class="btn-calendario" id="btn-mes-siguiente">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+            <div class="calendario-instrucciones">
+                <p style="font-size: 0.85rem; color: #6D6D80; margin: 0;">
+                    💡 Haz clic en cualquier día para ver o agregar pagos
+                </p>
+            </div>
+
+            <div class="calendario-grid">
+                <div class="calendario-dia-header">Dom</div>
+                <div class="calendario-dia-header">Lun</div>
+                <div class="calendario-dia-header">Mar</div>
+                <div class="calendario-dia-header">Mié</div>
+                <div class="calendario-dia-header">Jue</div>
+                <div class="calendario-dia-header">Vie</div>
+                <div class="calendario-dia-header">Sáb</div>
+
+                <div id="calendario-dias-container">
+                    <!-- Se generarán dinámicamente -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Historial de Pagos Nómina -->
+        <div class="historial-nomina">
+            <h3>Historial de Pagos de Nómina</h3>
+            <div class="tabla-nomina-container">
+                <table class="tabla-nomina">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Empleado</th>
+                            <th>Monto</th>
+                            <th>Observaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historial-nomina-body">
+                        <!-- Se llenará dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay-pagos" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Procesando...</p>
+        </div>
+    </div>
+</div>

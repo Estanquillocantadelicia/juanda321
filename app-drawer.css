@@ -1,0 +1,477 @@
+
+/* App Drawer - Estilo iOS 26 con Glassmorphism (Lado Izquierdo) */
+.app-drawer {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    max-width: 380px;
+    height: 100vh;
+    background: linear-gradient(135deg, 
+        rgba(242, 242, 247, 0.95) 0%, 
+        rgba(255, 255, 255, 0.88) 50%, 
+        rgba(242, 242, 247, 0.92) 100%);
+    backdrop-filter: blur(80px) saturate(180%) brightness(1.05);
+    -webkit-backdrop-filter: blur(80px) saturate(180%) brightness(1.05);
+    box-shadow: 
+        12px 0 80px rgba(0, 122, 255, 0.08),
+        8px 0 40px rgba(0, 0, 0, 0.06),
+        inset -1px 0 0 rgba(255, 255, 255, 0.6);
+    border-right: 1px solid rgba(255, 255, 255, 0.5);
+    border-top-right-radius: 28px;
+    border-bottom-right-radius: 28px;
+    z-index: 10001;
+    transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    
+    /* Ocultar scrollbar pero mantener funcionalidad */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.app-drawer::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.app-drawer.active {
+    left: 0;
+}
+
+.app-drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, 
+        rgba(0, 122, 255, 0.15), 
+        rgba(88, 86, 214, 0.12));
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.app-drawer-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Perfil de usuario en la parte superior */
+.app-drawer-user {
+    background: linear-gradient(135deg, 
+        rgba(0, 122, 255, 0.75) 0%, 
+        rgba(88, 86, 214, 0.68) 100%);
+    backdrop-filter: blur(40px) saturate(160%);
+    -webkit-backdrop-filter: blur(40px) saturate(160%);
+    padding: 40px 24px 30px;
+    margin: 16px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 
+        0 8px 32px rgba(0, 122, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.app-drawer-user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.app-drawer-user-info {
+    flex: 1;
+}
+
+.app-drawer-user-name {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.app-drawer-user-role {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.app-drawer-logout {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.app-drawer-logout:hover {
+    background: rgba(255, 59, 48, 0.8);
+    transform: scale(1.1);
+}
+
+/* Header del drawer */
+.app-drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    margin: 0 16px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.app-drawer-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, 
+        #007AFF 0%, 
+        #5856D6 50%, 
+        #AF52DE 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+
+.app-drawer-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: #1D1D1F;
+}
+
+.app-drawer-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: scale(1.1) rotate(90deg);
+}
+
+/* Grid de apps */
+.apps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px 24px 40px;
+    flex: 1;
+}
+
+.app-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.app-item:hover {
+    transform: scale(1.05);
+}
+
+.app-item:active {
+    transform: scale(0.95);
+}
+
+/* Icono de app con glassmorphism */
+.app-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(40px) saturate(180%) brightness(1.08);
+    -webkit-backdrop-filter: blur(40px) saturate(180%) brightness(1.08);
+    border: 1.5px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 
+        0 10px 40px rgba(0, 0, 0, 0.06),
+        0 6px 20px rgba(0, 122, 255, 0.08),
+        inset 0 1px 1px rgba(255, 255, 255, 0.9),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.03);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.app-item:hover .app-icon {
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Gradientes por módulo */
+.app-icon[data-module="dashboard"] {
+    background: linear-gradient(135deg, rgba(0, 122, 255, 0.4), rgba(88, 86, 214, 0.4));
+}
+
+.app-icon[data-module="ventas"] {
+    background: linear-gradient(135deg, rgba(52, 199, 89, 0.4), rgba(48, 184, 74, 0.4));
+}
+
+.app-icon[data-module="creditos"] {
+    background: linear-gradient(135deg, rgba(255, 149, 0, 0.4), rgba(255, 140, 0, 0.4));
+}
+
+.app-icon[data-module="caja"] {
+    background: linear-gradient(135deg, rgba(0, 122, 255, 0.4), rgba(88, 86, 214, 0.4));
+}
+
+.app-icon[data-module="inventario"] {
+    background: linear-gradient(135deg, rgba(88, 86, 214, 0.4), rgba(175, 82, 222, 0.4));
+}
+
+.app-icon[data-module="compras"] {
+    background: linear-gradient(135deg, rgba(255, 149, 0, 0.4), rgba(255, 140, 0, 0.4));
+}
+
+.app-icon[data-module="clientes"] {
+    background: linear-gradient(135deg, rgba(90, 200, 250, 0.4), rgba(0, 199, 190, 0.4));
+}
+
+.app-icon[data-module="proveedores"] {
+    background: linear-gradient(135deg, rgba(255, 45, 85, 0.4), rgba(255, 100, 100, 0.4));
+}
+
+.app-icon[data-module="pagos"] {
+    background: linear-gradient(135deg, rgba(255, 214, 10, 0.4), rgba(255, 179, 64, 0.4));
+}
+
+.app-icon[data-module="reportes"] {
+    background: linear-gradient(135deg, rgba(255, 159, 10, 0.4), rgba(255, 179, 64, 0.4));
+}
+
+.app-icon[data-module="usuarios"] {
+    background: linear-gradient(135deg, rgba(94, 92, 230, 0.4), rgba(87, 75, 144, 0.4));
+}
+
+.app-icon[data-module="promociones"] {
+    background: linear-gradient(135deg, rgba(191, 90, 242, 0.4), rgba(175, 82, 222, 0.4));
+}
+
+.app-icon[data-module="notas"] {
+    background: linear-gradient(135deg, rgba(255, 214, 10, 0.4), rgba(255, 204, 0, 0.4));
+}
+
+.app-icon[data-module="configuracion"] {
+    background: linear-gradient(135deg, rgba(142, 142, 147, 0.4), rgba(99, 99, 102, 0.4));
+}
+
+/* Nombre de la app */
+.app-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #1D1D1F;
+    text-align: center;
+    max-width: 90px;
+    line-height: 1.2;
+}
+
+/* Botón flotante para abrir drawer (en esquina izquierda) */
+.app-drawer-trigger {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 45px;
+    height: 85px;
+    background: linear-gradient(135deg, 
+        rgba(0, 122, 255, 0.95) 0%, 
+        rgba(88, 86, 214, 0.92) 100%);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border-radius: 0 24px 24px 0;
+    border: none;
+    border-left: none;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.4);
+    border-right: 1.5px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    box-shadow: 
+        6px 0 30px rgba(0, 122, 255, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.app-drawer-trigger:hover {
+    width: 52px;
+    background: linear-gradient(135deg, 
+        rgba(0, 122, 255, 1) 0%, 
+        rgba(88, 86, 214, 0.98) 100%);
+    box-shadow: 
+        10px 0 40px rgba(0, 122, 255, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.app-drawer-trigger:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .app-drawer {
+        max-width: 90%;
+    }
+    
+    .apps-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+    
+    .app-icon {
+        width: 65px;
+        height: 65px;
+        font-size: 1.8rem;
+    }
+}
+
+/* Efecto de brillo al tocar */
+.app-icon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.4), 
+        transparent
+    );
+    transition: left 0.5s ease;
+}
+
+.app-item:hover .app-icon::before {
+    left: 100%;
+}
+
+/* Estilos para iconos SVG */
+.icon-svg {
+    width: 28px;
+    height: 28px;
+    color: white;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logout-icon,
+.close-icon {
+    width: 20px;
+    height: 20px;
+    color: white;
+    transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.close-icon {
+    color: #1D1D1F;
+}
+
+.trigger-icon {
+    width: 24px;
+    height: 24px;
+    color: white;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Variables CSS para glassmorphism */
+:root {
+    --drawer-blur: 60px;
+    --drawer-saturation: 200%;
+    --drawer-brightness: 1.1;
+    --drawer-bg-opacity: 0.25;
+    --card-blur: 30px;
+    --card-bg-opacity: 0.35;
+    --spring-easing: cubic-bezier(0.16, 1, 0.3, 1);
+    --spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Mejoras de rendimiento */
+.app-drawer,
+.app-icon,
+.app-item {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Smooth scrolling en el drawer */
+.app-drawer {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Animación de entrada para las apps */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Animación del indicador de módulo activo */
+.app-item.active .app-icon {
+    box-shadow: 
+        0 0 0 3px rgba(0, 122, 255, 0.3),
+        0 12px 40px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+}
+
+.app-item.active .app-name {
+    color: #007AFF;
+    font-weight: 700;
+}

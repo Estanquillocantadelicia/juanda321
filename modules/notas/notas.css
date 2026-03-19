@@ -1,0 +1,895 @@
+/* Módulo de Notas Internas - Estilo Post-it de Nevera */
+
+.notas-module {
+    padding: 0;
+    min-height: calc(100vh - 180px);
+}
+
+/* Header del módulo */
+.notas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.notas-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.notas-icon-wrapper {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #FFD60A, #FF9F0A);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(255, 214, 10, 0.4);
+}
+
+.notas-icon {
+    width: 28px;
+    height: 28px;
+    color: white;
+}
+
+.notas-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.notas-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.notas-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.btn-nueva-nota {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #007AFF, #5856D6);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+.btn-nueva-nota:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+}
+
+.btn-nueva-nota:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.btn-nueva-nota svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Filtros */
+.notas-filtros {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.filtro-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filtro-btn:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.filtro-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: transparent;
+}
+
+.filtro-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.filtro-dot.todas { background: linear-gradient(135deg, #FFD60A, #FF9F0A); }
+.filtro-dot.para-mi { background: #007AFF; }
+.filtro-dot.mis-notas { background: #34C759; }
+.filtro-dot.urgente { background: #FF3B30; }
+
+.filtro-btn.active .filtro-dot {
+    background: white;
+}
+
+/* Estado vacío */
+.notas-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.empty-illustration {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 24px;
+}
+
+.empty-illustration svg {
+    width: 100%;
+    height: 100%;
+}
+
+.notas-empty h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 8px 0;
+}
+
+.notas-empty p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Tablero de notas - Grid Profesional */
+.notas-tablero {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    padding: 8px;
+}
+
+/* Tarjetas Premium - Estilo Slack/Figma */
+.nota-postit {
+    position: relative;
+    padding: 20px;
+    min-height: 240px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: white;
+    border: 1.5px solid rgba(0, 0, 0, 0.08);
+    border-left: 5px solid;
+    box-shadow: 
+        0 1px 3px rgba(0, 0, 0, 0.06),
+        0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.nota-postit:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 
+        0 12px 32px rgba(0, 0, 0, 0.15),
+        0 6px 12px rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+/* Colores vibrantes - Border izquierdo */
+.nota-postit.amarillo { border-left-color: #FFB800; background: linear-gradient(135deg, rgba(255,184,0,0.02) 0%, rgba(255,184,0,0.01) 100%); }
+.nota-postit.rosa { border-left-color: #FF5584; background: linear-gradient(135deg, rgba(255,85,132,0.02) 0%, rgba(255,85,132,0.01) 100%); }
+.nota-postit.verde { border-left-color: #34C759; background: linear-gradient(135deg, rgba(52,199,89,0.02) 0%, rgba(52,199,89,0.01) 100%); }
+.nota-postit.azul { border-left-color: #007AFF; background: linear-gradient(135deg, rgba(0,122,255,0.02) 0%, rgba(0,122,255,0.01) 100%); }
+.nota-postit.naranja { border-left-color: #FF9500; background: linear-gradient(135deg, rgba(255,149,0,0.02) 0%, rgba(255,149,0,0.01) 100%); }
+.nota-postit.morado { border-left-color: #AF52DE; background: linear-gradient(135deg, rgba(175,82,222,0.02) 0%, rgba(175,82,222,0.01) 100%); }
+
+/* Badge de urgente - Prominente */
+.nota-urgente-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #FF3B30;
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 6px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    animation: pulse-urgente 2s infinite;
+    box-shadow: 0 4px 12px rgba(255, 59, 48, 0.5);
+}
+
+@keyframes pulse-urgente {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+/* Contenido de la nota - Tipografía clara */
+.nota-contenido {
+    flex: 1;
+    font-size: 15px;
+    line-height: 1.65;
+    color: #1D1D1F;
+    word-wrap: break-word;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    font-weight: 400;
+    letter-spacing: -0.15px;
+    margin-bottom: 16px;
+}
+
+/* Footer de la nota */
+.nota-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.nota-autor {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.nota-autor-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #007AFF, #5856D6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.35);
+    flex-shrink: 0;
+}
+
+.nota-autor-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.nota-autor-nombre {
+    font-size: 13px;
+    color: #1D1D1F;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nota-tiempo {
+    font-size: 11px;
+    color: #A8A8AC;
+    font-weight: 400;
+}
+
+/* Indicador de lecturas */
+.nota-lecturas {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: #A8A8AC;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 5px 8px;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.nota-lecturas svg {
+    width: 13px;
+    height: 13px;
+    stroke-width: 2.5;
+}
+
+.nota-lecturas span {
+    font-weight: 500;
+}
+
+/* ========== MODALES ========== */
+/* El sistema unificado de modales se define en style.css */
+/* MODAL DE NOTAS - CONFIGURACIÓN AISLADA Y FIJA */
+
+.modal-notas {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: linear-gradient(135deg,
+        rgba(0, 122, 255, 0.13),
+        rgba(88, 86, 214, 0.10));
+    backdrop-filter: blur(18px) saturate(130%);
+    -webkit-backdrop-filter: blur(18px) saturate(130%);
+    display: none !important;
+    z-index: 99999 !important;
+    padding: 20px !important;
+    margin: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    pointer-events: auto !important;
+    opacity: 0;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box !important;
+}
+
+.modal-notas.active {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+.modal-notas-wrapper {
+    display: contents;
+}
+
+.modal-notas-content {
+    position: relative !important;
+    background: linear-gradient(135deg,
+        rgba(242, 242, 247, 0.95) 0%,
+        rgba(255, 255, 255, 0.90) 50%,
+        rgba(242, 242, 247, 0.92) 100%);
+    backdrop-filter: blur(60px) saturate(180%) brightness(1.04);
+    -webkit-backdrop-filter: blur(60px) saturate(180%) brightness(1.04);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.13),
+        0 8px 32px rgba(0, 122, 255, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    width: 100%;
+    max-width: 480px;
+    max-height: 85vh;
+    top: auto !important;
+    left: auto !important;
+    margin: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    pointer-events: auto !important;
+    z-index: 1 !important;
+    will-change: transform, opacity;
+    animation: notasModalIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.modal-notas-content::-webkit-scrollbar {
+    display: none;
+}
+
+@keyframes notasModalIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-notas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 24px 20px;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 28px 28px 0 0;
+}
+
+.modal-notas-header h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(135deg, 
+        #007AFF 0%, 
+        #5856D6 50%, 
+        #AF52DE 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+
+.modal-notas-close {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-notas-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: scale(1.1) rotate(90deg);
+}
+
+.modal-notas-close svg {
+    width: 18px;
+    height: 18px;
+    color: #1D1D1F;
+}
+
+/* Body del modal usa .modal-body del sistema unificado */
+#form-nueva-nota {
+    /* Padding heredado de .modal-body */
+    padding: 24px; /* Mantenemos el padding original para el form-nueva-nota */
+}
+
+.form-group-nota {
+    margin-bottom: 16px;
+}
+
+.form-group-nota label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.form-group-nota textarea,
+.form-group-nota select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    font-size: 15px;
+    font-family: inherit;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.form-group-nota textarea:focus,
+.form-group-nota select:focus {
+    outline: none;
+    border-color: #007AFF;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
+    transform: scale(1.01);
+}
+
+.form-group-nota textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.char-counter {
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin-top: 6px;
+}
+
+/* Selector de colores */
+.color-selector {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.color-option {
+    cursor: pointer;
+}
+
+.color-option input {
+    display: none;
+}
+
+.color-swatch {
+    display: block;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 2.5px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.color-option input:checked + .color-swatch {
+    border-color: #007AFF;
+    border-width: 3px;
+    transform: scale(1.15);
+    box-shadow: 
+        0 6px 20px rgba(0, 122, 255, 0.3),
+        0 0 0 4px rgba(0, 122, 255, 0.1);
+}
+
+.color-swatch.amarillo { background: linear-gradient(135deg, #FFF9C4, #FFEB3B); }
+.color-swatch.rosa { background: linear-gradient(135deg, #FFCDD2, #F8BBD9); }
+.color-swatch.verde { background: linear-gradient(135deg, #C8E6C9, #A5D6A7); }
+.color-swatch.azul { background: linear-gradient(135deg, #BBDEFB, #90CAF9); }
+.color-swatch.naranja { background: linear-gradient(135deg, #FFE0B2, #FFCC80); }
+.color-swatch.morado { background: linear-gradient(135deg, #E1BEE7, #CE93D8); }
+
+/* Selector de prioridad */
+.prioridad-selector {
+    display: flex;
+    gap: 12px;
+}
+
+.prioridad-option {
+    cursor: pointer;
+}
+
+.prioridad-option input {
+    display: none;
+}
+
+.prioridad-badge {
+    display: inline-block;
+    padding: 11px 22px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.prioridad-badge.normal {
+    background: rgba(0, 122, 255, 0.15);
+    color: #007AFF;
+    border: 1.5px solid rgba(0, 122, 255, 0.2);
+}
+
+.prioridad-badge.urgente {
+    background: rgba(255, 59, 48, 0.15);
+    color: #FF3B30;
+    border: 1.5px solid rgba(255, 59, 48, 0.2);
+}
+
+.prioridad-option input:checked + .prioridad-badge.normal {
+    background: linear-gradient(135deg, #007AFF, #5856D6);
+    color: white;
+    border-color: transparent;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+.prioridad-option input:checked + .prioridad-badge.urgente {
+    background: #FF3B30;
+    color: white;
+    border-color: transparent;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 59, 48, 0.3);
+}
+
+/* Checkbox personalizado */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    padding: 8px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.checkbox-label:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.checkbox-label input {
+    display: none;
+}
+
+.checkbox-custom {
+    width: 26px;
+    height: 26px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.checkbox-label input:checked + .checkbox-custom {
+    background: linear-gradient(135deg, #007AFF, #5856D6);
+    border-color: transparent;
+    transform: scale(1.1);
+}
+
+.checkbox-label input:checked + .checkbox-custom::after {
+    content: '';
+    width: 7px;
+    height: 11px;
+    border: 2.5px solid white;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+}
+
+/* Footer del modal */
+.modal-notas-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 20px 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 0 0 28px 28px;
+}
+
+.btn-cancelar-nota {
+    padding: 13px 24px;
+    border: none;
+    background: rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1D1D1F;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-cancelar-nota:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+}
+
+.btn-crear-nota,
+.btn-marcar-leida {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 24px;
+    border: none;
+    background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+.btn-crear-nota:hover,
+.btn-marcar-leida:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+}
+
+.btn-crear-nota svg,
+.btn-marcar-leida svg {
+    width: 18px;
+    height: 18px;
+}
+
+.btn-eliminar-nota {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: none;
+    background: rgba(255, 59, 48, 0.1);
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #FF3B30;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-right: auto;
+}
+
+.btn-eliminar-nota:hover {
+    background: #FF3B30;
+    color: white;
+}
+
+.btn-eliminar-nota svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Modal ver nota */
+.modal-ver .nota-detalle-content {
+    padding: 24px;
+}
+
+.nota-detalle-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.nota-detalle-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #007AFF, #5856D6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.nota-detalle-info h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: var(--text-primary);
+}
+
+.nota-detalle-info span {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.nota-detalle-mensaje {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.nota-detalle-mensaje.amarillo { background: linear-gradient(135deg, #FFF9C4, #FFEB3B); }
+.nota-detalle-mensaje.rosa { background: linear-gradient(135deg, #FFCDD2, #F8BBD9); }
+.nota-detalle-mensaje.verde { background: linear-gradient(135deg, #C8E6C9, #A5D6A7); }
+.nota-detalle-mensaje.azul { background: linear-gradient(135deg, #BBDEFB, #90CAF9); }
+.nota-detalle-mensaje.naranja { background: linear-gradient(135deg, #FFE0B2, #FFCC80); }
+.nota-detalle-mensaje.morado { background: linear-gradient(135deg, #E1BEE7, #CE93D8); }
+
+.nota-detalle-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    background: rgba(0, 0, 0, 0.04);
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+
+.meta-item svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .notas-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .btn-nueva-nota {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .notas-tablero {
+        grid-template-columns: 1fr;
+    }
+
+    .nota-postit {
+        transform: rotate(0deg) !important;
+    }
+
+    /* Responsive específico de notas (hereda de style.css) */
+    .modal-notas-content {
+        max-width: 100%;
+        max-height: 85vh; /* Ajuste para pantallas más pequeñas */
+        border-radius: 20px 20px 0 0;
+        margin-top: auto; /* Empuja el modal hacia abajo */
+    }
+
+    .color-selector {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .notas-title {
+        font-size: 1.5rem;
+    }
+
+    .notas-icon-wrapper {
+        width: 48px;
+        height: 48px;
+    }
+
+    .notas-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .notas-filtros {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .filtro-btn {
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    /* Responsive específico de notas */
+    .modal-notas-header h2 {
+        font-size: 1.1rem;
+    }
+}

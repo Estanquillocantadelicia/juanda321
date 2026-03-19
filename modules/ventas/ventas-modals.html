@@ -1,0 +1,165 @@
+
+<!-- Modal: Selección de Producto -->
+<div id="modal-seleccion-producto" class="modal">
+    <div class="modal-content modal-seleccion-content">
+        <div class="modal-header">
+            <h3>
+                <svg class="modal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span id="seleccion-producto-nombre"></span>
+            </h3>
+            <button id="modal-seleccion-close" class="modal-close">✕</button>
+        </div>
+        <div class="modal-body modal-seleccion-body">
+            <div id="seleccion-producto-content">
+                <!-- Se llenará dinámicamente -->
+            </div>
+        </div>
+        <div class="modal-seleccion-footer">
+            <button class="btn-listo-seleccion" onclick="ventasModule.cerrarModalSeleccion()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Listo
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Pago en Efectivo -->
+<div id="modal-efectivo" class="modal">
+    <div class="modal-content modal-efectivo">
+        <div class="modal-header-efectivo">
+            <div class="efectivo-icon-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+            </div>
+            <h3>Pago en Efectivo</h3>
+            <button id="modal-efectivo-close" class="modal-close-efectivo">✕</button>
+        </div>
+        <div class="modal-body-efectivo">
+            <!-- Total a Pagar -->
+            <div class="total-venta-card">
+                <div class="total-label">Total de la Venta</div>
+                <div class="total-amount" id="efectivo-total-display">$0.00</div>
+            </div>
+
+            <!-- Input Monto Recibido -->
+            <div class="monto-recibido-container">
+                <label class="input-label-efectivo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                        <line x1="1" y1="10" x2="23" y2="10"></line>
+                    </svg>
+                    Monto Recibido
+                </label>
+                <input 
+                    type="number" 
+                    id="efectivo-monto-recibido" 
+                    class="input-efectivo" 
+                    placeholder="0.00"
+                    step="0.01"
+                    min="0"
+                    autofocus
+                >
+                <div class="botones-rapidos">
+                    <button type="button" class="btn-monto-rapido" data-monto="10000">$10,000</button>
+                    <button type="button" class="btn-monto-rapido" data-monto="20000">$20,000</button>
+                    <button type="button" class="btn-monto-rapido" data-monto="50000">$50,000</button>
+                    <button type="button" class="btn-monto-rapido" data-monto="100000">$100,000</button>
+                </div>
+            </div>
+
+            <!-- Cambio -->
+            <div class="cambio-card" id="cambio-card">
+                <div class="cambio-header">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <polyline points="1 20 1 14 7 14"></polyline>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                    <span>Cambio a Devolver</span>
+                </div>
+                <div class="cambio-monto" id="efectivo-cambio-display">$0.00</div>
+                <div class="cambio-status" id="cambio-status"></div>
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="modal-actions-efectivo">
+                <button id="btn-cancelar-efectivo" class="btn-cancelar-efectivo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                    Cancelar
+                </button>
+                <button id="btn-confirmar-efectivo" class="btn-confirmar-efectivo" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Confirmar Venta
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Detalle de Venta -->
+<div id="modal-detalle-venta" class="modal">
+    <div class="modal-content modal-large">
+        <div class="modal-header">
+            <h3>
+                <svg class="modal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                </svg>
+                Detalle de Venta
+            </h3>
+            <button id="modal-detalle-close" class="modal-close">✕</button>
+        </div>
+        <div class="modal-body" id="detalle-venta-content">
+            <!-- Se llenará dinámicamente -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Cancelar Venta -->
+<div id="modal-cancelar-venta" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>
+                <svg class="modal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                Cancelar Venta
+            </h3>
+            <button id="modal-cancelar-close" class="modal-close">✕</button>
+        </div>
+        <div class="modal-body">
+            <p style="margin-bottom: 20px; color: #6D6D80;">
+                ¿Estás seguro de que deseas cancelar esta venta? Esta acción devolverá el stock al inventario.
+            </p>
+            <div class="form-group">
+                <label>Motivo de Cancelación *</label>
+                <textarea 
+                    id="motivo-cancelacion" 
+                    class="textarea-field" 
+                    rows="3"
+                    placeholder="Describe el motivo de la cancelación..."
+                    required
+                ></textarea>
+            </div>
+            <div class="modal-actions">
+                <button id="btn-cancelar-cancelacion" class="btn-secondary">No, Mantener Venta</button>
+                <button id="btn-confirmar-cancelacion" class="btn-danger">Sí, Cancelar Venta</button>
+            </div>
+        </div>
+    </div>
+</div>

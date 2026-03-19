@@ -1,0 +1,187 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Verificar si el usuario actual es administrador
+    function isAdmin() {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.personalInfo.rol == 'administrador';
+    }
+    
+    // Usuarios - Lectura pública para selector de emails en login
+    // Cualquier usuario autenticado puede editar usuarios (para gestión de permisos)
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    
+    // Productos
+    match /products/{productId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+    
+    // Proveedores
+    match /providers/{providerId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated()
+        && request.resource.data.keys().hasAll(['nombre'])
+        && request.resource.data.nombre is string;
+      allow update: if isAuthenticated();
+      allow delete: if isAuthenticated();
+    }
+    
+    // Categorías
+    match /categories/{categoryId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+    
+    // Clientes
+    match /clients/{clientId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+    
+    // Ventas - REGLAS OPTIMIZADAS
+    match /sales/{saleId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() 
+        && request.resource.data.keys().hasAll(['folio', 'fecha', 'productos', 'total', 'estado'])
+        && request.resource.data.productos is list
+        && request.resource.data.total is number
+        && request.resource.data.estado in ['completada', 'pendiente', 'cancelada'];
+      allow update: if isAuthenticated();
+      allow delete: if isAuthenticated();
+    }
+    
+    // Cajas - REGLAS OPTIMIZADAS PARA CONSULTAS COMPUESTAS
+    match /cajas/{cajaId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated()
+        && request.resource.data.keys().hasAll(['vendedorId', 'vendedor', 'estado', 'fechaApertura'])
+        && request.resource.data.vendedorId is string
+        && request.resource.data.estado in ['abierta', 'cerrada'];
+      allow update: if isAuthenticated();
+      allow delete: if isAuthenticated();
+    }
+    
+    // Colección de control de cajas activas (documento de lock)
+    match /cajas_activas/{vendedorId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+    
+    // Configuración - Lectura pública para nombre del negocio en login
+    match /configuracion/{docId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    
+    // Abonos - Registro de pagos a créditos
+    match /abonos/{abonoId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated()
+        && request.resource.data.keys().hasAll(['ventaId', 'clienteId', 'monto', 'fecha'])
+        && request.resource.data.monto is number
+        && request.resource.data.monto > 0;
+      allow update: if isAuthenticated();
+      allow delete: if isAuthenticated();
+    }
+    
+    // Pagos - Gestión de caja mayor, ingresos, egresos y nómina
+    match /pagos/{pagoId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated()
+        && request.resource.data.keys().hasAll(['tipo', 'concepto', 'monto', 'categoria', 'fecha'])
+        && request.resource.data.tipo in ['ingreso', 'egreso', 'nomina']
+        && request.resource.data.monto is number
+        && request.resource.data.monto > 0;
+      allow update: if isAuthenticated();
+      allow delete: if isAuthenticated();
+    }
+    
+    // Precios personalizados por cliente
+    match /customPrices/{priceId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated()
+        && request.resource.data.keys().hasAll(['clienteId', 'productoId', 'tipoProducto', 'precioEspecial', 'activo'])
+        && request.resource.data.clienteId is string
+        && request.resource.data.productoId is string
+        && request.resource.data.precioEspecial is number
+        && request.resource.data.precioEspecial >= 0
+        && request.resource.data.activo is bool;
+      allow update: if isAuthenticated();
+      allow delete: if isAuthenticated();
+    }
+    
+    // Solicitudes de edición de precios (vendedor solicita autorización)
+    match /solicitudes_edicion_precio/{solicitudId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated()
+        && request.resource.data.keys().hasAll(['vendedorId', 'vendedor', 'carritoId', 'estado', 'fechaSolicitud'])
+        && request.resource.data.vendedorId == request.auth.uid
+        && request.resource.data.vendedor is string
+        && request.resource.data.carritoId is number
+        && request.resource.data.estado == 'pendiente';
+      allow update: if isAdmin()
+        && request.resource.data.estado in ['aprobada', 'rechazada'];
+      allow delete: if isAdmin() 
+        || (isAuthenticated() && resource.data.vendedorId == request.auth.uid);
+    }
+    
+    // Sesiones de edición de precios temporal (solo admin puede crear/modificar)
+    match /sesiones_precio_temporal/{sessionId} {
+      allow read: if isAuthenticated();
+      allow create: if isAdmin()
+        && request.resource.data.keys().hasAll(['vendedorId', 'adminAutorizo', 'activo'])
+        && request.resource.data.vendedorId is string
+        && request.resource.data.adminAutorizo == request.auth.uid
+        && request.resource.data.activo is bool;
+      allow update: if isAdmin()
+        || (isAuthenticated() 
+            && resource.data.vendedorId == request.auth.uid
+            && resource.data.activo == true
+            && request.resource.data.activo == false
+            && request.resource.data.vendedorId == resource.data.vendedorId
+            && request.resource.data.adminAutorizo == resource.data.adminAutorizo);
+      allow delete: if isAdmin();
+    }
+    
+    // Compras - Registro de compras a proveedores
+    match /purchases/{purchaseId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated()
+        && request.resource.data.keys().hasAll(['folio', 'fecha', 'productos', 'total', 'proveedor'])
+        && request.resource.data.folio is string
+        && request.resource.data.productos is list
+        && request.resource.data.total is number
+        && request.resource.data.total > 0
+        && request.resource.data.proveedor is map
+        && request.resource.data.proveedor.keys().hasAll(['id', 'nombre']);
+      allow update: if isAuthenticated();
+      allow delete: if isAuthenticated();
+    }
+    
+    // Notas Internas - Sistema de post-its para comunicación del equipo
+    match /notas_internas/{notaId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated()
+        && request.resource.data.keys().hasAll(['contenido', 'autorId', 'autorNombre', 'fechaCreacion'])
+        && request.resource.data.contenido is string
+        && request.resource.data.autorId == request.auth.uid;
+      allow update: if isAuthenticated();
+      allow delete: if isAuthenticated() 
+        && resource.data.autorId == request.auth.uid;
+    }
+  }
+}

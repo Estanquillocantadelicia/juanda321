@@ -1,0 +1,287 @@
+
+<!-- Modales de Inventario - Configuración aislada y fija -->
+
+<!-- Modal: Nuevo/Editar Producto -->
+<div id="modal-producto" class="modal-inventario">
+    <div class="modal-inventario-wrapper">
+        <div class="modal-inventario-content modal-inventario-large">
+            <div class="modal-inventario-header">
+                <h3 id="modal-title">Nuevo Producto</h3>
+                <button id="modal-close" class="modal-inventario-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-inventario-body">
+                <form id="form-producto">
+                    <!-- Paso 1: Tipo de Producto -->
+                    <div class="form-step" id="step-tipo-producto">
+                        <h4>¿Qué tipo de producto es?</h4>
+                        <div class="tipo-producto-grid">
+                            <label class="tipo-producto-card">
+                                <input type="radio" name="tipoProducto" value="simple" checked>
+                                <div class="card-content">
+                                    <span class="card-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                        </svg>
+                                    </span>
+                                    <h5>Producto Simple</h5>
+                                    <p>Un solo precio y stock</p>
+                                </div>
+                            </label>
+                            <label class="tipo-producto-card">
+                                <input type="radio" name="tipoProducto" value="variantes">
+                                <div class="card-content">
+                                    <span class="card-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                            <polyline points="2 17 12 22 22 17"></polyline>
+                                            <polyline points="2 12 12 17 22 12"></polyline>
+                                        </svg>
+                                    </span>
+                                    <h5>Con Variantes</h5>
+                                    <p>Diferentes tamaños o presentaciones</p>
+                                </div>
+                            </label>
+                            <label class="tipo-producto-card">
+                                <input type="radio" name="tipoProducto" value="conversion">
+                                <div class="card-content">
+                                    <span class="card-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                                        </svg>
+                                    </span>
+                                    <h5>Con Conversión</h5>
+                                    <p>Venta por unidad o paquete</p>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="form-navigation">
+                            <button type="button" class="btn-next" id="btn-siguiente-tipo">Siguiente</button>
+                        </div>
+                    </div>
+
+                    <!-- Paso 2: Información Básica -->
+                    <div class="form-step hidden" id="step-info-basica">
+                        <h4>Información del Producto</h4>
+                        <div class="form-group">
+                            <label for="nombre">Nombre del Producto *</label>
+                            <input type="text" id="nombre" name="nombre" required placeholder="Ej: Coca-Cola">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="codigo">Código de Barras</label>
+                                <input type="text" id="codigo" name="codigo" placeholder="Ej: 7501234567890">
+                                <small>Opcional</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoria">Categoría *</label>
+                                <select id="categoria" name="categoria" required>
+                                    <option value="">Seleccionar categoría</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="proveedor">Proveedor *</label>
+                            <select id="proveedor" name="proveedor" required>
+                                <option value="">Seleccionar proveedor</option>
+                            </select>
+                        </div>
+                        <div class="form-navigation">
+                            <button type="button" class="btn-back" id="btn-atras-info">Atrás</button>
+                            <button type="button" class="btn-next" id="btn-siguiente-info">Siguiente</button>
+                        </div>
+                    </div>
+
+                    <!-- Paso 3A: Producto Simple -->
+                    <div class="form-step hidden" id="step-simple">
+                        <h4>Precios y Stock</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="precio-costo">Precio de Costo *</label>
+                                <input type="number" id="precio-costo" name="precioCosto" step="0.01" min="0" placeholder="0.00">
+                            </div>
+                            <div class="form-group">
+                                <label for="precio-publico">Precio Venta Público *</label>
+                                <input type="number" id="precio-publico" name="precioPublico" step="0.01" min="0" placeholder="0.00">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="precio-mayorista">Precio Venta Mayorista *</label>
+                                <input type="number" id="precio-mayorista" name="precioMayorista" step="0.01" min="0" placeholder="0.00">
+                            </div>
+                            <div class="form-group utilidad-display">
+                                <label>Utilidad Mayorista</label>
+                                <div class="utilidad-value" id="utilidad-mayorista">$0.00 (0%)</div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group utilidad-display">
+                                <label>Utilidad Público</label>
+                                <div class="utilidad-value" id="utilidad-publico">$0.00 (0%)</div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="stock-inicial">Stock Inicial *</label>
+                                <input type="number" id="stock-inicial" name="stockInicial" min="0" placeholder="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="stock-minimo">Stock Mínimo *</label>
+                                <input type="number" id="stock-minimo" name="stockMinimo" min="0" placeholder="0">
+                            </div>
+                        </div>
+                        <div class="form-navigation">
+                            <button type="button" class="btn-back" id="btn-atras-simple">Atrás</button>
+                            <button type="submit" class="btn-save">Guardar Producto</button>
+                        </div>
+                    </div>
+
+                    <!-- Paso 3B: Producto con Variantes -->
+                    <div class="form-step hidden" id="step-variantes">
+                        <h4>Variantes del Producto</h4>
+                        <div id="variantes-container">
+                            <!-- Las variantes se agregarán dinámicamente -->
+                        </div>
+                        <button type="button" class="btn-add-variante" id="btn-agregar-variante">
+                            ➕ Agregar Variante
+                        </button>
+                        <div class="form-navigation">
+                            <button type="button" class="btn-back" id="btn-atras-variantes">Atrás</button>
+                            <button type="submit" class="btn-save">Guardar Producto</button>
+                        </div>
+                    </div>
+
+                    <!-- Paso 3C: Producto con Conversión -->
+                    <div class="form-step hidden" id="step-conversion">
+                        <h4>Unidades de Venta</h4>
+                        <div class="form-group">
+                            <label for="unidad-base">Unidad Base *</label>
+                            <input type="text" id="unidad-base" name="unidadBase" placeholder="Ej: unidad" value="unidad">
+                            <small>La unidad más pequeña de venta</small>
+                        </div>
+                        <div id="conversiones-container">
+                            <!-- Las conversiones se agregarán dinámicamente -->
+                        </div>
+                        <button type="button" class="btn-add-conversion" id="btn-agregar-conversion">
+                            ➕ Agregar Unidad de Venta
+                        </button>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="stock-inicial-conversion">Stock Total (en unidad base) *</label>
+                                <input type="number" id="stock-inicial-conversion" name="stockInicialConversion" min="0" placeholder="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="stock-minimo-conversion">Stock Mínimo *</label>
+                                <input type="number" id="stock-minimo-conversion" name="stockMinimoConversion" min="0" placeholder="0">
+                            </div>
+                        </div>
+                        <div class="form-navigation">
+                            <button type="button" class="btn-back" id="btn-atras-conversion">Atrás</button>
+                            <button type="submit" class="btn-save">Guardar Producto</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Categorías -->
+<div id="modal-categorias" class="modal-inventario">
+    <div class="modal-inventario-wrapper">
+        <div class="modal-inventario-content">
+            <div class="modal-inventario-header">
+                <h3>Gestionar Categorías</h3>
+                <button id="modal-categorias-close" class="modal-inventario-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-inventario-body">
+                <div class="categoria-form">
+                    <input type="text" id="nueva-categoria" placeholder="Nueva categoría">
+                    <button id="btn-agregar-categoria" class="btn-primary">Agregar</button>
+                </div>
+                <ul id="lista-categorias" class="categorias-list">
+                    <!-- Las categorías se cargarán dinámicamente -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Precio Especial -->
+<div id="modal-precio-especial" class="modal-inventario">
+    <div class="modal-inventario-wrapper">
+        <div class="modal-inventario-content">
+            <div class="modal-inventario-header">
+                <h3>
+                    <svg class="modal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    Asignar Precio Especial
+                </h3>
+                <button id="modal-precio-close" class="modal-inventario-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-inventario-body">
+                <div class="precio-info-producto">
+                    <h4 id="precio-producto-nombre">Producto</h4>
+                    <div id="precio-producto-detalles" class="producto-detalles-precio"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Precio Especial *</label>
+                    <input type="number" id="input-precio-especial" class="input-field" step="0.01" min="0" placeholder="0.00" required>
+                    <small class="form-hint">Este será el precio que verá este cliente en el punto de venta</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Notas (Opcional)</label>
+                    <textarea id="input-notas-precio" class="textarea-field" rows="2" placeholder="Ej: Cliente preferencial - descuento especial"></textarea>
+                </div>
+
+                <div class="precio-comparacion">
+                    <div class="precio-item">
+                        <span class="label">Precio Público:</span>
+                        <span id="comp-precio-publico" class="value">$0.00</span>
+                    </div>
+                    <div class="precio-item">
+                        <span class="label">Precio Mayorista:</span>
+                        <span id="comp-precio-mayorista" class="value">$0.00</span>
+                    </div>
+                    <div class="precio-item especial">
+                        <span class="label">Precio Especial:</span>
+                        <span id="comp-precio-especial" class="value">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button id="btn-cancelar-precio" class="btn-secondary">Cancelar</button>
+                    <button id="btn-guardar-precio" class="btn-primary">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        Guardar Precio
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

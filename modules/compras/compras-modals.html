@@ -1,0 +1,118 @@
+
+<!-- Modales de Compras - Configuración aislada y fija -->
+
+<!-- Modal: Selección de Variantes/Conversiones -->
+<div id="modal-seleccion-producto" class="modal-compras">
+    <div class="modal-compras-wrapper">
+        <div class="modal-compras-content">
+            <div class="modal-compras-header">
+                <h3 id="seleccion-producto-nombre">Seleccionar Variante</h3>
+                <button id="modal-seleccion-close" class="modal-compras-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-compras-body">
+                <div id="seleccion-producto-content">
+                    <!-- Se llenará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Editar Precios -->
+<div id="modal-editar-precios" class="modal-compras">
+    <div class="modal-compras-wrapper">
+        <div class="modal-compras-content">
+            <div class="modal-compras-header">
+                <h3>💰 Editar Precios</h3>
+                <button id="modal-editar-precios-close" class="modal-compras-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-compras-body">
+                <div style="margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #E5E5EA;">
+                    <h4 id="editar-precio-producto-nombre" style="margin: 0; font-size: 1.1rem; color: #2C2C2E;">Producto</h4>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group">
+                        <label for="editar-precio-costo">Precio de Costo *</label>
+                        <input type="number" id="editar-precio-costo" class="form-input" step="0.01" min="0" placeholder="0.00" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editar-precio-publico">Precio Público *</label>
+                        <input type="number" id="editar-precio-publico" class="form-input" step="0.01" min="0" placeholder="0.00" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editar-precio-mayorista">Precio Mayorista *</label>
+                        <input type="number" id="editar-precio-mayorista" class="form-input" step="0.01" min="0" placeholder="0.00" required>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                    <button id="btn-cancelar-editar-precios" class="btn-secondary" style="flex: 1;">Cancelar</button>
+                    <button id="btn-guardar-editar-precios" class="btn-primary" style="flex: 1;">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Detalle de Compra -->
+<div id="modal-detalle-compra" class="modal-compras">
+    <div class="modal-compras-wrapper">
+        <div class="modal-compras-content modal-compras-large">
+            <div class="modal-compras-header">
+                <h3 id="detalle-compra-titulo">Detalle de Compra</h3>
+                <button id="modal-detalle-close" class="modal-compras-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-compras-body">
+                <div id="detalle-compra-content">
+                    <!-- Se llenará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Anular Compra -->
+<div id="modal-anular-compra" class="modal-compras">
+    <div class="modal-compras-wrapper">
+        <div class="modal-compras-content">
+            <div class="modal-compras-header">
+                <h3>⚠️ Anular Compra</h3>
+                <button id="modal-anular-close" class="modal-compras-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-compras-body">
+                <p style="color: #6D6D80; margin-bottom: 20px;">¿Estás seguro de que deseas anular esta compra? Esta acción no se puede deshacer.</p>
+                
+                <div class="form-group" style="margin-bottom: 24px;">
+                    <label for="motivo-anulacion">Motivo de anulación (Opcional)</label>
+                    <textarea id="motivo-anulacion" class="textarea-field" rows="3" placeholder="Ej: Error en la cantidad, producto dañado, etc."></textarea>
+                </div>
+
+                <div style="display: flex; gap: 12px;">
+                    <button id="btn-cancelar-anular" class="btn-secondary" style="flex: 1;">Cancelar</button>
+                    <button id="btn-confirmar-anular" class="btn-danger" style="flex: 1; background: #FF3B30; color: white;">Anular Compra</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,302 @@
+
+<div class="creditos-module">
+    <!-- Sistema de Pestañas Estilo Apple -->
+    <div class="creditos-tabs-wrapper">
+        <div class="creditos-tabs">
+            <button class="creditos-tab active" data-tab="cobranza">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+                <span class="tab-text">Cobranza</span>
+            </button>
+            <button class="creditos-tab" data-tab="clientes-deuda">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <span class="tab-text">Clientes</span>
+            </button>
+            <button class="creditos-tab" data-tab="historial">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+                <span class="tab-text">Historial</span>
+            </button>
+            <button class="creditos-tab" data-tab="reportes">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+                <span class="tab-text">Reportes</span>
+            </button>
+            <div class="tab-indicator"></div>
+        </div>
+    </div>
+
+    <!-- TAB 1: COBRANZA RÁPIDA -->
+    <div class="tab-content active" id="tab-cobranza">
+        <div class="cobranza-container">
+            <!-- Panel de estadísticas rápidas -->
+            <div class="stats-grid">
+                <div class="stat-card card-danger">
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Total por Cobrar</span>
+                        <span class="stat-value" id="total-por-cobrar">$0.00</span>
+                    </div>
+                </div>
+                <div class="stat-card card-warning">
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Créditos Vencidos</span>
+                        <span class="stat-value" id="creditos-vencidos">$0.00</span>
+                    </div>
+                </div>
+                <div class="stat-card card-success">
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Cobrado Hoy</span>
+                        <span class="stat-value" id="cobrado-hoy">$0.00</span>
+                    </div>
+                </div>
+                <div class="stat-card card-info">
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Clientes con Deuda</span>
+                        <span class="stat-value" id="clientes-deudores">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Búsqueda de cliente -->
+            <div class="cobranza-search">
+                <h3>
+                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    Registrar Abono
+                </h3>
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        id="search-cliente-credito" 
+                        placeholder="Buscar cliente por nombre..." 
+                        class="search-input"
+                        autocomplete="off"
+                    >
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <div id="clientes-dropdown" class="search-dropdown">
+                        <!-- Se llena dinámicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen de deuda del cliente seleccionado -->
+            <div id="cliente-seleccionado-info" class="cliente-info-panel" style="display: none;">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: CLIENTES CON DEUDA -->
+    <div class="tab-content" id="tab-clientes-deuda">
+        <div class="clientes-deuda-container">
+            <div class="filters-bar">
+                <select id="filter-orden" class="filter-select">
+                    <option value="deuda-desc">Mayor Deuda Primero</option>
+                    <option value="deuda-asc">Menor Deuda Primero</option>
+                    <option value="nombre">Por Nombre</option>
+                    <option value="vencidos">Vencidos Primero</option>
+                </select>
+                <select id="filter-estado-deuda" class="filter-select">
+                    <option value="todos">Todos</option>
+                    <option value="vigente">Vigente</option>
+                    <option value="vencido">Vencido</option>
+                </select>
+            </div>
+
+            <div id="clientes-cards-container" class="clientes-cards">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: HISTORIAL DE ABONOS -->
+    <div class="tab-content" id="tab-historial">
+        <div class="historial-container">
+            <div class="historial-filters">
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        id="historial-search" 
+                        placeholder="Buscar por cliente, folio..." 
+                        class="search-input"
+                    >
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </div>
+                <select id="filter-periodo-historial" class="filter-select">
+                    <option value="hoy">Hoy</option>
+                    <option value="semana">Esta Semana</option>
+                    <option value="mes">Este Mes</option>
+                    <option value="todo">Todo</option>
+                </select>
+            </div>
+
+            <div class="historial-table-container">
+                <table class="historial-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Cliente</th>
+                            <th>Folio Venta</th>
+                            <th>Monto Abonado</th>
+                            <th>Método</th>
+                            <th>Saldo Restante</th>
+                            <th>Estado</th>
+                            <th>Recibió</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historial-abonos-body">
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 40px; color: #6D6D80;">
+                                No hay abonos registrados
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 4: REPORTES -->
+    <div class="tab-content" id="tab-reportes">
+        <div class="reportes-container">
+            <h3>
+                <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+                Reportes de Cobranza
+            </h3>
+            
+            <div class="reportes-grid">
+                <div class="reporte-card">
+                    <div class="reporte-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                            <line x1="1" y1="10" x2="23" y2="10"></line>
+                        </svg>
+                    </div>
+                    <h4>Cartera Total</h4>
+                    <div class="reporte-valor" id="reporte-cartera-total">$0.00</div>
+                    <div class="reporte-detalle">
+                        <span>Vigente: <strong id="reporte-vigente">$0.00</strong></span>
+                        <span>Vencido: <strong id="reporte-vencido" style="color: #FF3B30;">$0.00</strong></span>
+                    </div>
+                </div>
+
+                <div class="reporte-card">
+                    <div class="reporte-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                    </div>
+                    <h4>Cobranza del Mes</h4>
+                    <div class="reporte-valor" id="reporte-cobrado-mes">$0.00</div>
+                    <div class="reporte-detalle">
+                        <span>Abonos: <strong id="reporte-num-abonos">0</strong></span>
+                    </div>
+                </div>
+
+                <div class="reporte-card">
+                    <div class="reporte-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <h4>Promedio de Cobro</h4>
+                    <div class="reporte-valor" id="reporte-promedio-dias">0 días</div>
+                    <div class="reporte-detalle">
+                        <span>Tiempo promedio de pago</span>
+                    </div>
+                </div>
+
+                <div class="reporte-card">
+                    <div class="reporte-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M16 8l-8 8"></path>
+                            <path d="M8 8h8v8"></path>
+                        </svg>
+                    </div>
+                    <h4>Tasa de Recuperación</h4>
+                    <div class="reporte-valor" id="reporte-tasa-recuperacion">0%</div>
+                    <div class="reporte-detalle">
+                        <span>Del total otorgado</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico de tendencia (futuro) -->
+            <div class="grafico-placeholder">
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <p>Gráficos de tendencia disponibles próximamente</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loading-overlay-creditos" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Procesando...</p>
+        </div>
+    </div>
+</div>

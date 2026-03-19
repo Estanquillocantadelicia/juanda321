@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#007AFF">
+    <meta name="description" content="Sistema integral de gestión empresarial con módulos de caja, ventas, inventario, créditos y más">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SistemaGestión">
+    <link rel="apple-touch-icon" href="generated-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <title>Sistema de Gestión Empresarial</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script>window.APP_VERSION = '20260319-3';</script>
+</head>
+<body>
+    <!-- Overlay para cerrar sidebar en móvil -->
+    <div id="sidebar-overlay"></div>
+
+    <!-- Sidebar tradicional oculto (ya no se usa) -->
+    <aside id="sidebar" class="sidebar" style="display: none;"></aside>
+
+    <!-- Contenido principal -->
+    <main class="main-container">
+        <header class="main-header">
+            <h1 id="page-title">Notas Internas</h1>
+            <div class="header-actions">
+                <button class="header-btn notification-btn" aria-label="Notificaciones">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <span class="notification-badge">3</span>
+                </button>
+                <button class="header-btn user-menu-btn" id="user-menu-trigger" aria-label="Menú de usuario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <div id="main-content" class="main-content">
+            <!-- El contenido se cargará dinámicamente aquí -->
+            <div class="loading-spinner" id="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+    <!-- Scripts de la aplicación -->
+    <script src="firebase-config.js"></script>
+    <script src="firebase-diagnostics.js"></script>
+    <link href="auth-styles.css" rel="stylesheet" type="text/css" />
+    <script src="auth-system.js"></script>
+
+    <!-- Core Utilities (Iconos y Animaciones) -->
+    <script src="modules/core/cache-manager.js"></script>
+    <script src="modules/core/icon-registry.js"></script>
+    <script src="modules/core/motion-utils.js"></script>
+    <script src="modules/core/module-preloader.js"></script>
+    <script src="modules/core/skeleton-screen.js"></script>
+
+    <!-- Bottom Tab Bar (iOS 26 style) -->
+    <link href="bottom-tab-bar.css" rel="stylesheet" type="text/css" />
+    <script src="bottom-tab-bar.js"></script>
+
+    <!-- User Menu Dropdown -->
+    <link href="user-menu.css" rel="stylesheet" type="text/css" />
+    <script src="user-menu.js"></script>
+
+    <!-- Widget de Autorizaciones (Admin) -->
+    <script src="autorizaciones-widget.js"></script>
+
+    <!-- CONTENEDOR PERMANENTE PARA MODALES DE TODOS LOS MÓDULOS -->
+    <!-- Este contenedor NUNCA se destruye, permanece en el DOM -->
+    <div id="permanent-modals-container" style="position: fixed; top: 0; left: 0; width: 0; height: 0; overflow: visible; z-index: 9999;">
+        <!-- Los modales de cada módulo se cargarán aquí y permanecerán -->
+    </div>
+
+    <script src="script.js"></script>
+
+    <!-- Registro de Service Worker para PWA -->
+    <script>
+        // Registrar Service Worker para funcionalidad offline
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then((registration) => {
+                        console.log('✅ Service Worker registrado correctamente');
+                        console.log('Scope:', registration.scope);
+                        
+                        // Verificar actualizaciones cada vez que se carga la página
+                        registration.update();
+                        
+                        // Escuchar actualizaciones disponibles
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'activated') {
+                                    console.log('🔄 Nueva versión disponible, recargando...');
+                                    window.location.reload();
+                                }
+                            });
+                        });
+                    })
+                    .catch((error) => {
+                        console.warn('⚠️ Error al registrar Service Worker:', error);
+                    });
+            });
+        } else {
+            console.log('ℹ️ Service Workers no soportados en este navegador');
+        }
+
+        // Detectar si está instalado como PWA
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('📱 PWA instalable detectada');
+            e.preventDefault();
+            window.deferredPrompt = e;
+        });
+
+        window.addEventListener('appinstalled', () => {
+            console.log('✨ App instalada exitosamente');
+            window.deferredPrompt = null;
+        });
+    </script>
+</body>
+</html>

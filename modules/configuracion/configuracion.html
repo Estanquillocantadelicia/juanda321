@@ -1,0 +1,431 @@
+<div class="configuracion-module">
+    <!-- Header con Tabs Estilo Apple -->
+    <div class="config-tabs-wrapper">
+        <div class="config-tabs">
+            <button class="config-tab-btn active" data-tab="general">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M12 1v6m0 6v6m5.66-13.66l-4.24 4.24m0 6l-4.24 4.24M23 12h-6m-6 0H1m18.66 5.66l-4.24-4.24m0-6l-4.24-4.24"></path>
+                </svg>
+                <span class="tab-text">General</span>
+            </button>
+            <button class="config-tab-btn" data-tab="horario">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span class="tab-text">Horario Comercial</span>
+            </button>
+            <button class="config-tab-btn" data-tab="notificaciones">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span class="tab-text">Notificaciones</span>
+            </button>
+            <button class="config-tab-btn" data-tab="avanzado">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                </svg>
+                <span class="tab-text">Avanzado</span>
+            </button>
+            <div class="tab-indicator"></div>
+        </div>
+    </div>
+
+    <!-- Tab: General -->
+    <div class="config-tab-content active" id="tab-general">
+        <div class="config-section">
+            <h3 class="section-title">
+                <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                Información del Negocio
+            </h3>
+            <div class="config-card">
+                <div class="form-group">
+                    <label>Nombre del Negocio</label>
+                    <input type="text" id="nombre-negocio" class="input-field" placeholder="Ej: Mi Estanquillo">
+                </div>
+                <div class="form-group">
+                    <label>Dirección</label>
+                    <input type="text" id="direccion-negocio" class="input-field" placeholder="Calle, Número, Colonia">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="tel" id="telefono-negocio" class="input-field" placeholder="(+52) 000 000 0000">
+                </div>
+            </div>
+        </div>
+
+        <div class="config-section">
+            <h3 class="section-title">
+                <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                Configuración de Ventas
+            </h3>
+            <div class="config-card">
+                <div class="form-group">
+                    <label>Moneda</label>
+                    <select id="moneda" class="select-input">
+                        <option value="MXN">MXN - Peso Mexicano</option>
+                        <option value="USD">USD - Dólar</option>
+                        <option value="EUR">EUR - Euro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>IVA (%)</label>
+                    <input type="number" id="iva" class="input-field" placeholder="16" step="0.01">
+                </div>
+            </div>
+        </div>
+
+        <div class="config-section">
+            <h3 class="section-title">
+                <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+                Control de Cajas
+            </h3>
+            <div class="config-card">
+                <div class="form-group">
+                    <label>Máximo de Cajas Abiertas Simultáneamente</label>
+                    <input type="number" id="max-cajas-abiertas" min="1" max="10" value="1">
+                    <small>Número máximo de cajas que pueden estar abiertas al mismo tiempo</small>
+                    <div id="cajas-abiertas-status" style="margin-top: 8px; color: #007AFF; font-weight: 600;">
+                        <span id="cajas-abiertas-count">Cargando...</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Efectivo Inicial en Caja Mayor (Pagos)</label>
+                    <input type="number" id="efectivo-inicial-pagos" step="0.01" min="0" placeholder="0.00">
+                    <small>Monto de efectivo inicial en el módulo de pagos (caja mayor)</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="config-actions">
+            <button id="btn-guardar-general" class="btn-primary">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                    <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
+                <span>Guardar Cambios</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Tab: Horario Comercial -->
+    <div class="config-tab-content" id="tab-horario">
+        <div class="config-section">
+            <div class="section-header">
+                <h3 class="section-title">
+                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    Horario Comercial del Negocio
+                </h3>
+                <p class="section-description">
+                    Define el horario de operación de tu negocio. El sistema ajustará automáticamente el historial de ventas y reportes según este horario.
+                </p>
+            </div>
+
+            <div class="config-card horario-card">
+                <!-- Vista Previa del Horario -->
+                <div class="horario-preview">
+                    <div class="preview-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <div class="preview-info">
+                        <div class="preview-label">Horario Actual</div>
+                        <div id="preview-horario" class="preview-value">09:00 AM - 07:00 AM (día siguiente)</div>
+                    </div>
+                </div>
+
+                <!-- Configuración de Inicio -->
+                <div class="horario-config-row">
+                    <div class="horario-label">
+                        <svg class="horario-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 18a5 5 0 0 0-10 0"></path>
+                            <line x1="12" y1="2" x2="12" y2="9"></line>
+                            <line x1="4.22" y1="10.22" x2="5.64" y2="11.64"></line>
+                            <line x1="1" y1="18" x2="3" y2="18"></line>
+                            <line x1="21" y1="18" x2="23" y2="18"></line>
+                            <line x1="18.36" y1="11.64" x2="19.78" y2="10.22"></line>
+                            <line x1="23" y1="22" x2="1" y2="22"></line>
+                            <polyline points="8 6 12 2 16 6"></polyline>
+                        </svg>
+                        <div>
+                            <strong>Inicio del Día Comercial</strong>
+                            <p>Hora en que inicia tu jornada laboral</p>
+                        </div>
+                    </div>
+                    <div class="horario-inputs">
+                        <input type="time" id="hora-inicio" class="time-input" value="09:00">
+                    </div>
+                </div>
+
+                <!-- Configuración de Fin -->
+                <div class="horario-config-row">
+                    <div class="horario-label">
+                        <svg class="horario-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                        <div>
+                            <strong>Fin del Día Comercial</strong>
+                            <p>Hora en que termina tu jornada laboral</p>
+                        </div>
+                    </div>
+                    <div class="horario-inputs">
+                        <input type="time" id="hora-fin" class="time-input" value="07:00">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="es-dia-siguiente" checked>
+                            <span class="checkmark"></span>
+                            <span class="checkbox-text">Día siguiente</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Explicación Visual -->
+                <div class="horario-explanation">
+                    <div class="explanation-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+                    <div class="explanation-text">
+                        <strong>¿Cómo funciona?</strong>
+                        <p>Si tu negocio cierra después de medianoche, marca "Día siguiente". Por ejemplo: si abres a las 9:00 AM y cierras a las 7:00 AM del día siguiente, el sistema contará todas las ventas entre esas horas como un solo "día comercial".</p>
+                    </div>
+                </div>
+
+                <!-- Estado Actual del Día Comercial -->
+                <div class="dia-comercial-status">
+                    <div class="status-header">
+                        <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        <strong>Estado del Día Comercial Actual</strong>
+                    </div>
+                    <div id="status-dia-comercial" class="status-content">
+                        <div class="status-row">
+                            <span>Fecha inicio:</span>
+                            <span id="fecha-inicio-actual">-</span>
+                        </div>
+                        <div class="status-row">
+                            <span>Fecha fin:</span>
+                            <span id="fecha-fin-actual">-</span>
+                        </div>
+                        <div class="status-row">
+                            <span>Estado:</span>
+                            <span id="estado-comercial" class="badge badge-success">Abierto</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="config-actions">
+            <button id="btn-guardar-horario" class="btn-primary">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                    <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
+                <span>Guardar Horario Comercial</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Tab: Notificaciones -->
+    <div class="config-tab-content" id="tab-notificaciones">
+        <div class="config-section">
+            <h3 class="section-title">
+                <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                Alertas y Notificaciones
+            </h3>
+            <div class="config-card">
+                <div class="notification-option">
+                    <div class="option-info">
+                        <strong>Stock Bajo</strong>
+                        <p>Recibir alerta cuando un producto esté por agotarse</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="notif-stock-bajo" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="notification-option">
+                    <div class="option-info">
+                        <strong>Créditos Vencidos</strong>
+                        <p>Notificar cuando un crédito esté por vencer</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="notif-creditos" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="notification-option">
+                    <div class="option-info">
+                        <strong>Ventas Diarias</strong>
+                        <p>Resumen de ventas al final del día</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="notif-ventas" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="config-actions">
+            <button id="btn-guardar-notificaciones" class="btn-primary">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                    <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
+                <span>Guardar Preferencias</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Tab: Avanzado -->
+    <div class="config-tab-content" id="tab-avanzado">
+        <div class="config-section">
+            <h3 class="section-title">
+                <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                </svg>
+                Configuración Avanzada
+            </h3>
+            <div class="config-card">
+                <div class="advanced-option">
+                    <div class="option-info">
+                        <strong>Modo Debug</strong>
+                        <p>Mostrar información técnica en consola</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="modo-debug">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="advanced-option">
+                    <div class="option-info">
+                        <strong>Sincronización Automática</strong>
+                        <p>Sincronizar datos con Firebase en tiempo real</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="sync-auto" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="config-section">
+            <h3>🧹 Mantenimiento</h3>
+            <button id="btn-limpiar-cache" class="btn btn-secondary">
+                🗑️ Limpiar Caché Local
+            </button>
+            <p class="helper-text">Elimina datos temporales almacenados en el navegador</p>
+        </div>
+
+        <div class="config-section">
+            <h3>🔄 Reinicio de Datos (Producción)</h3>
+            <p class="helper-text">Selecciona las colecciones que deseas limpiar antes de comenzar en producción:</p>
+
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="reset-ventas" class="reset-checkbox">
+                    <span>📊 Ventas (sales)</span>
+                </label>
+                <label>
+                    <input type="checkbox" id="reset-cajas" class="reset-checkbox">
+                    <span>💰 Cajas (cajas + cajas_activas)</span>
+                </label>
+                <label>
+                    <input type="checkbox" id="reset-abonos" class="reset-checkbox">
+                    <span>💳 Abonos (abonos)</span>
+                </label>
+                <label>
+                    <input type="checkbox" id="reset-pagos" class="reset-checkbox">
+                    <span>💵 Pagos (pagos)</span>
+                </label>
+                <label>
+                    <input type="checkbox" id="reset-productos" class="reset-checkbox">
+                    <span>📦 Productos (products)</span>
+                </label>
+                <label>
+                    <input type="checkbox" id="reset-clientes" class="reset-checkbox">
+                    <span>👥 Clientes (clients)</span>
+                </label>
+                <label>
+                    <input type="checkbox" id="reset-proveedores" class="reset-checkbox">
+                    <span>🏭 Proveedores (providers)</span>
+                </label>
+                <label>
+                    <input type="checkbox" id="reset-compras" class="reset-checkbox">
+                    <span>🛒 Compras (purchases)</span>
+                </label>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <button id="btn-reset-datos" class="btn btn-warning">
+                    🗑️ Eliminar Datos Seleccionados
+                </button>
+                <button id="btn-seleccionar-todo" class="btn btn-secondary" style="margin-left: 0.5rem;">
+                    ☑️ Seleccionar Todo
+                </button>
+            </div>
+            <p class="helper-text" style="color: #FF3B30; margin-top: 0.5rem;">
+                ⚠️ Esta acción es IRREVERSIBLE. Los datos eliminados no se pueden recuperar.
+            </p>
+        </div>
+
+        <div class="config-section danger-zone">
+            <h3 class="section-title danger">
+                <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                Zona Peligrosa
+            </h3>
+            <div class="config-card">
+                <button id="btn-resetear-config" class="btn-secondary">
+                    <span class="icon">🔄</span>
+                    Restaurar Configuración por Defecto
+                </button>
+                <p class="helper-text">Esta acción no se puede deshacer</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay-config" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Guardando configuración...</p>
+        </div>
+    </div>
+</div>

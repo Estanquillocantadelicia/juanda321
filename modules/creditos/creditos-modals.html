@@ -1,0 +1,127 @@
+
+<!-- Modal: Registrar Abono -->
+<div id="modal-abono" class="modal-creditos">
+    <div class="modal-creditos-wrapper">
+        <div class="modal-creditos-content">
+            <div class="modal-creditos-header">
+                <h3>
+                    <svg class="modal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    Registrar Abono
+                </h3>
+                <button id="modal-abono-close" class="modal-creditos-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-creditos-body">
+                <div class="cliente-resumen">
+                    <h4 id="abono-cliente-nombre">Cliente</h4>
+                    <div class="deuda-info">
+                        <span>Deuda Total:</span>
+                        <span id="abono-deuda-total" class="amount-danger">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="tipo-abono-selector">
+                    <label class="radio-option">
+                        <input type="radio" name="tipo-abono" value="especifico" checked>
+                        <span class="radio-label">
+                            <strong>Abonar a venta específica</strong>
+                            <small>Selecciona qué venta pagar</small>
+                        </span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="tipo-abono" value="general">
+                        <span class="radio-label">
+                            <strong>Abono general automático</strong>
+                            <small>Se distribuye a ventas más antiguas</small>
+                        </span>
+                    </label>
+                </div>
+
+                <!-- Lista de ventas pendientes -->
+                <div id="ventas-pendientes-container" class="ventas-pendientes">
+                    <!-- Se llena dinámicamente -->
+                </div>
+
+                <!-- Formulario de abono -->
+                <div class="form-group">
+                    <label>Monto del Abono *</label>
+                    <div style="position: relative;">
+                        <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6D6D80; font-weight: 600; pointer-events: none;">$</span>
+                        <input 
+                            type="number" 
+                            id="monto-abono" 
+                            class="input-field" 
+                            placeholder="0.00"
+                            step="0.01"
+                            min="0.01"
+                            style="padding-left: 28px;"
+                        >
+                    </div>
+                    <small class="input-hint" id="abono-hint" style="display: block; margin-top: 8px; min-height: 20px;"></small>
+                </div>
+
+                <div class="form-group">
+                    <label>Método de Pago *</label>
+                    <select id="metodo-pago-abono" class="select-input">
+                        <option value="efectivo">💵 Efectivo</option>
+                        <option value="tarjeta">💳 Tarjeta</option>
+                        <option value="transferencia">🏦 Transferencia</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Notas (opcional)</label>
+                    <textarea 
+                        id="notas-abono" 
+                        class="textarea-field" 
+                        rows="2"
+                        placeholder="Notas adicionales sobre el abono..."
+                    ></textarea>
+                </div>
+
+                <div class="modal-creditos-footer">
+                    <button id="btn-cancelar-abono" class="btn-secondary">Cancelar</button>
+                    <button id="btn-confirmar-abono" class="btn-primary">
+                        <span class="icon">✅</span>
+                        Confirmar Abono
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Detalle de Cuenta Cliente -->
+<div id="modal-detalle-cliente" class="modal-creditos">
+    <div class="modal-creditos-wrapper">
+        <div class="modal-creditos-content modal-creditos-large">
+            <div class="modal-creditos-header">
+                <h3>
+                    <svg class="modal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                    </svg>
+                    Estado de Cuenta
+                </h3>
+                <button id="modal-detalle-cliente-close" class="modal-creditos-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-creditos-body" id="detalle-cliente-content">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </div>
+    </div>
+</div>

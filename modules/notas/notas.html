@@ -1,0 +1,67 @@
+<!-- Módulo de Notas Internas - Tablero de Post-its -->
+<div class="notas-module">
+    <!-- Header del tablero -->
+    <div class="notas-header">
+        <div class="notas-header-left">
+            <div class="notas-icon-wrapper">
+                <svg class="notas-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+            </div>
+            <div class="notas-title-group">
+                <h2 class="notas-title">Notas del Equipo</h2>
+                <p class="notas-subtitle">Mensajes rápidos y recordatorios</p>
+            </div>
+        </div>
+        <button class="btn-nueva-nota" id="btn-nueva-nota">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Nueva Nota</span>
+        </button>
+    </div>
+
+    <!-- Filtros rápidos -->
+    <div class="notas-filtros">
+        <button class="filtro-btn active" data-filtro="todas">
+            <span class="filtro-dot todas"></span>
+            Todas
+        </button>
+        <button class="filtro-btn" data-filtro="para-mi">
+            <span class="filtro-dot para-mi"></span>
+            Para mí
+        </button>
+        <button class="filtro-btn" data-filtro="mis-notas">
+            <span class="filtro-dot mis-notas"></span>
+            Mis notas
+        </button>
+        <button class="filtro-btn" data-filtro="urgentes">
+            <span class="filtro-dot urgente"></span>
+            Urgentes
+        </button>
+    </div>
+
+    <!-- Estado vacío -->
+    <div class="notas-empty" id="notas-empty" style="display: none;">
+        <div class="empty-illustration">
+            <svg viewBox="0 0 120 120" fill="none">
+                <rect x="20" y="30" width="50" height="60" rx="4" fill="#FFE066" transform="rotate(-5 20 30)"/>
+                <rect x="50" y="25" width="50" height="60" rx="4" fill="#FF9F9F" transform="rotate(3 50 25)"/>
+                <rect x="35" y="35" width="50" height="60" rx="4" fill="#90EE90" transform="rotate(-2 35 35)"/>
+                <circle cx="95" cy="25" r="8" fill="#007AFF"/>
+                <path d="M92 25h6M95 22v6" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </div>
+        <h3>No hay notas pendientes</h3>
+        <p>Crea una nota para compartir recordatorios con tu equipo</p>
+    </div>
+
+    <!-- Tablero de notas (grid de post-its) -->
+    <div class="notas-tablero" id="notas-tablero">
+        <!-- Las notas se cargan dinámicamente aquí -->
+    </div>
+</div>

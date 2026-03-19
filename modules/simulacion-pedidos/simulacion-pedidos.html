@@ -1,0 +1,81 @@
+
+<div class="simulacion-pedidos-module">
+    <!-- Header con selección de proveedor -->
+    <div class="module-header">
+        <div class="proveedor-selector">
+            <label for="select-proveedor">Seleccionar Proveedor:</label>
+            <select id="select-proveedor" class="proveedor-select">
+                <option value="">-- Seleccione un proveedor --</option>
+            </select>
+        </div>
+        <div class="header-actions">
+            <button id="btn-limpiar-simulacion" class="btn-secondary" disabled>
+                <span class="icon">🗑️</span>
+                Limpiar Simulación
+            </button>
+            <button id="btn-exportar-simulacion" class="btn-primary" disabled>
+                <span class="icon">📄</span>
+                Exportar a PDF
+            </button>
+        </div>
+    </div>
+
+    <!-- Resumen del pedido -->
+    <div id="resumen-pedido" class="resumen-pedido hidden">
+        <div class="resumen-card">
+            <h3>📊 Resumen del Pedido</h3>
+            <div class="resumen-info">
+                <div class="resumen-item">
+                    <span class="label">Proveedor:</span>
+                    <span id="resumen-proveedor" class="value">-</span>
+                </div>
+                <div class="resumen-item">
+                    <span class="label">Productos a pedir:</span>
+                    <span id="resumen-cantidad-productos" class="value">0</span>
+                </div>
+                <div class="resumen-item total">
+                    <span class="label">Total del pedido:</span>
+                    <span id="resumen-total" class="value">$0.00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de productos -->
+    <div class="productos-table-container">
+        <div id="empty-state" class="empty-state">
+            <div class="empty-icon">📦</div>
+            <p>Selecciona un proveedor para ver sus productos</p>
+        </div>
+
+        <table id="productos-table" class="productos-table hidden">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Tipo</th>
+                    <th>Stock Actual</th>
+                    <th>Precio Costo</th>
+                    <th>Cantidad a Pedir</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody id="productos-table-body">
+                <!-- Los productos se cargarán dinámicamente -->
+            </tbody>
+            <tfoot id="productos-table-footer" class="hidden">
+                <tr>
+                    <td colspan="5" style="text-align: right; font-weight: 600;">TOTAL DEL PEDIDO:</td>
+                    <td id="total-pedido" style="font-weight: 700; color: #007AFF; font-size: 1.1rem;">$0.00</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loading-overlay-simulacion" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Cargando productos...</p>
+        </div>
+    </div>
+</div>

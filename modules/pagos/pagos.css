@@ -1,0 +1,1132 @@
+
+/* Módulo de Pagos - Estilos Profesionales Apple */
+.pagos-module {
+    padding: 0;
+}
+
+/* Sistema de Pestañas Estilo Apple */
+.pagos-tabs-wrapper {
+    margin-bottom: 24px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 16px;
+    padding: 8px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06), 
+                0 1px 3px rgba(0, 0, 0, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    border: 0.5px solid rgba(255, 255, 255, 0.8);
+    position: relative;
+}
+
+.pagos-tabs {
+    display: flex;
+    gap: 0;
+    position: relative;
+    background: transparent;
+    padding: 0;
+}
+
+.pagos-tab {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    background: transparent;
+    color: #6D6D80;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    border-radius: 10px;
+    z-index: 1;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pagos-tab:hover {
+    color: #007AFF;
+    transform: translateY(-1px) scale(1.02);
+}
+
+.pagos-tab.active {
+    color: #007AFF;
+}
+
+.tab-icon {
+    width: 24px;
+    height: 24px;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.pagos-tab.active .tab-icon {
+    transform: scale(1.1);
+}
+
+.tab-text {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+}
+
+.tab-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 122, 255, 0.12), rgba(88, 86, 214, 0.12));
+    border-radius: 10px;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 0;
+    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.15),
+                0 1px 3px rgba(0, 122, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(0, 122, 255, 0.2);
+}
+
+.pagos-tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.pagos-tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tarjeta Principal de Efectivo */
+.efectivo-principal-card {
+    background: linear-gradient(135deg, #34C759, #30B84A);
+    color: white;
+    padding: 32px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 24px rgba(52, 199, 89, 0.25),
+                0 4px 12px rgba(52, 199, 89, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.efectivo-principal-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+    animation: shimmer 8s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { transform: translate(-20%, -20%) rotate(0deg); }
+    50% { transform: translate(-30%, -30%) rotate(180deg); }
+}
+
+.efectivo-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.efectivo-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.efectivo-icon svg {
+    width: 28px;
+    height: 28px;
+    stroke: white;
+}
+
+.efectivo-header h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+    opacity: 0.95;
+}
+
+.efectivo-amount {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin: 12px 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+.efectivo-subtitle {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+/* Controles de Movimiento */
+.controles-movimiento {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.btn-movimiento {
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.btn-ingreso {
+    background: linear-gradient(135deg, #34C759, #30B84A);
+    color: white;
+}
+
+.btn-egreso {
+    background: linear-gradient(135deg, #FF3B30, #E8344E);
+    color: white;
+}
+
+.btn-movimiento:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.btn-movimiento .btn-icon {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2.5;
+}
+
+/* Stats de Pagos */
+.stats-pagos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid #E5E5E7;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+}
+
+.stat-ingresos .stat-icon {
+    background: linear-gradient(135deg, rgba(52, 199, 89, 0.1), rgba(48, 184, 74, 0.1));
+}
+
+.stat-egresos .stat-icon {
+    background: linear-gradient(135deg, rgba(255, 59, 48, 0.1), rgba(232, 52, 78, 0.1));
+}
+
+.stat-nomina .stat-icon {
+    background: linear-gradient(135deg, rgba(0, 122, 255, 0.1), rgba(88, 86, 214, 0.1));
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-label {
+    display: block;
+    color: #6D6D80;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2C2C2E;
+}
+
+/* Últimos Movimientos */
+.ultimos-movimientos {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.ultimos-movimientos h3 {
+    margin: 0 0 20px 0;
+    color: #2C2C2E;
+}
+
+.movimientos-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.movimiento-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: #F8F9FA;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.movimiento-item:hover {
+    background: #F2F2F7;
+    transform: translateX(4px);
+}
+
+.movimiento-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.movimiento-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.movimiento-icon.ingreso {
+    background: linear-gradient(135deg, rgba(52, 199, 89, 0.15), rgba(48, 184, 74, 0.15));
+    color: #34C759;
+}
+
+.movimiento-icon.egreso {
+    background: linear-gradient(135deg, rgba(255, 59, 48, 0.15), rgba(232, 52, 78, 0.15));
+    color: #FF3B30;
+}
+
+.movimiento-icon.nomina {
+    background: linear-gradient(135deg, rgba(0, 122, 255, 0.15), rgba(88, 86, 214, 0.15));
+    color: #007AFF;
+}
+
+.movimiento-detalles h4 {
+    margin: 0 0 4px 0;
+    font-size: 0.95rem;
+    color: #2C2C2E;
+}
+
+.movimiento-detalles p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #6D6D80;
+}
+
+.movimiento-monto {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.movimiento-monto.positivo {
+    color: #34C759;
+}
+
+.movimiento-monto.negativo {
+    color: #FF3B30;
+}
+
+/* Tabla de Historial */
+.filtros-historial {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 150px;
+}
+
+.filter-group label {
+    font-weight: 600;
+    color: #6D6D80;
+    font-size: 0.9rem;
+}
+
+.filter-select {
+    padding: 10px 16px;
+    border: 1.5px solid rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.9);
+    color: #2C2C2E;
+    transition: all 0.3s ease;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #007AFF;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.search-container {
+    position: relative;
+    flex: 1;
+    max-width: 400px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 11px 16px 11px 44px;
+    border: 1.5px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #007AFF;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: #6D6D80;
+}
+
+.tabla-historial-container {
+    background: white;
+    border-radius: 12px;
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 600px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.tabla-historial {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.tabla-historial thead {
+    background: #F2F2F7;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.tabla-historial th {
+    padding: 16px;
+    text-align: left;
+    font-weight: 600;
+    color: #2C2C2E;
+    font-size: 14px;
+    background: #F2F2F7;
+}
+
+.tabla-historial th > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.table-header-icon {
+    width: 18px;
+    height: 18px;
+    color: #007AFF;
+    stroke-width: 2;
+}
+
+.tabla-historial td {
+    padding: 16px;
+    border-top: 1px solid #E5E5EA;
+    color: #2C2C2E;
+}
+
+.tabla-historial tr:hover {
+    background: #F8F9FA;
+}
+
+/* Nómina - Calendario */
+.nomina-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.nomina-header h2 {
+    margin: 0;
+    color: #2C2C2E;
+}
+
+.nomina-stats {
+    display: flex;
+    gap: 24px;
+}
+
+.nomina-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.nomina-stat .label {
+    font-size: 0.85rem;
+    color: #6D6D80;
+}
+
+.nomina-stat .value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #007AFF;
+}
+
+.calendario-container {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
+    max-width: 600px;
+}
+
+.calendario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.calendario-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #2C2C2E;
+}
+
+.btn-calendario {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: #F2F2F7;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.btn-calendario:hover {
+    background: #E5E5E7;
+    transform: scale(1.05);
+}
+
+.btn-calendario svg {
+    width: 16px;
+    height: 16px;
+    stroke: #2C2C2E;
+}
+
+.calendario-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.calendario-dia-header {
+    text-align: center;
+    padding: 8px;
+    font-weight: 600;
+    color: #6D6D80;
+    font-size: 0.85rem;
+}
+
+#calendario-dias-container {
+    display: contents;
+}
+
+.calendario-dia {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    background: white;
+    border: 2px solid #E5E5EA;
+    color: #2C2C2E;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.calendario-dia:hover {
+    background: linear-gradient(135deg, #F5F5FA, #FFFFFF);
+    border-color: #D1D1D6;
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.calendario-dia.otro-mes {
+    color: #C7C7CC;
+    background: transparent;
+    border-color: transparent;
+}
+
+.calendario-dia.hoy {
+    background: linear-gradient(135deg, #007AFF, #0051D5);
+    color: white;
+    border-color: #0051D5;
+    box-shadow: 0 6px 16px rgba(0, 122, 255, 0.3);
+    font-weight: 700;
+}
+
+.calendario-dia.con-pago {
+    background: linear-gradient(135deg, rgba(52, 199, 89, 0.15), rgba(48, 184, 74, 0.1));
+    color: #34C759;
+    border-color: #34C759;
+    font-weight: 700;
+}
+
+.calendario-dia.con-pago::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    width: 6px;
+    height: 6px;
+    background: #34C759;
+    border-radius: 50%;
+}
+
+/* ✨ Multi-select */
+.calendario-dia.seleccionado {
+    background: linear-gradient(135deg, #FF9500, #FF8C00);
+    color: white;
+    border-color: #FF8C00;
+    box-shadow: 0 6px 16px rgba(255, 149, 0, 0.35);
+    transform: scale(1.08);
+}
+
+.calendario-dia.seleccionado:hover {
+    background: linear-gradient(135deg, #FF9500, #FF7B00);
+}
+
+/* Instrucciones del Calendario */
+.calendario-instrucciones {
+    padding: 0 16px 16px 16px;
+}
+
+/* Botón Modo Multi-Pago */
+.btn-modo-multi {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #F2F2F7;
+    color: #2C2C2E;
+    border: 2px solid #E5E5EA;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-modo-multi:hover {
+    background: #E5E5EA;
+    border-color: #D1D1D6;
+    transform: translateY(-1px);
+}
+
+.btn-modo-multi.activo {
+    background: linear-gradient(135deg, #34C759, #30B84A);
+    color: white;
+    border-color: #30B84A;
+    box-shadow: 0 6px 16px rgba(52, 199, 89, 0.35);
+}
+
+.btn-modo-multi svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.5;
+}
+
+/* Botón Pagar Nómina Multiple */
+.btn-pagar-multiple {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, #FF9500, #FF8C00);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 6px 16px rgba(255, 149, 0, 0.35);
+}
+
+.btn-pagar-multiple:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 10px 24px rgba(255, 149, 0, 0.45);
+}
+
+.btn-pagar-multiple:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Historial de Nómina */
+.historial-nomina {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.historial-nomina h3 {
+    margin: 0 0 20px 0;
+    color: #2C2C2E;
+}
+
+.tabla-nomina-container {
+    overflow-x: auto;
+}
+
+.tabla-nomina {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-nomina thead {
+    background: #F2F2F7;
+}
+
+.tabla-nomina th {
+    padding: 16px;
+    text-align: left;
+    font-weight: 600;
+    color: #2C2C2E;
+}
+
+.tabla-nomina td {
+    padding: 16px;
+    border-top: 1px solid #E5E5EA;
+}
+
+.tabla-nomina tr:hover {
+    background: #F8F9FA;
+}
+
+/* ========== MODALES DE PAGOS - CONFIGURACIÓN AISLADA Y FIJA ========== */
+/* Siguiendo EXACTAMENTE la misma estructura que caja */
+
+.modal-pagos {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: linear-gradient(135deg,
+        rgba(0, 122, 255, 0.13),
+        rgba(88, 86, 214, 0.10));
+    backdrop-filter: blur(18px) saturate(130%);
+    -webkit-backdrop-filter: blur(18px) saturate(130%);
+    display: none !important;
+    z-index: 99999 !important;
+    padding: 20px !important;
+    margin: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    pointer-events: auto !important;
+    opacity: 0;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box !important;
+}
+
+.modal-pagos.active {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+.modal-pagos-wrapper {
+    display: contents;
+}
+
+.modal-pagos-content {
+    position: relative !important;
+    background: linear-gradient(135deg,
+        rgba(242, 242, 247, 0.95) 0%,
+        rgba(255, 255, 255, 0.90) 50%,
+        rgba(242, 242, 247, 0.92) 100%);
+    backdrop-filter: blur(60px) saturate(180%) brightness(1.04);
+    -webkit-backdrop-filter: blur(60px) saturate(180%) brightness(1.04);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.13),
+        0 8px 32px rgba(0, 122, 255, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    width: 100%;
+    max-width: 500px;
+    max-height: 85vh;
+    top: auto !important;
+    left: auto !important;
+    margin: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    pointer-events: auto !important;
+    z-index: 1 !important;
+    will-change: transform, opacity;
+    animation: pagosModalIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.modal-pagos-content::-webkit-scrollbar {
+    display: none;
+}
+
+@keyframes pagosModalIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+.modal-pagos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 24px 20px;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 28px 28px 0 0;
+}
+
+.modal-pagos-header h3 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(135deg, 
+        #007AFF 0%, 
+        #5856D6 50%, 
+        #AF52DE 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+
+.modal-pagos-close {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-pagos-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: scale(1.1) rotate(90deg);
+}
+
+.modal-pagos-close svg {
+    width: 18px;
+    height: 18px;
+    color: #1D1D1F;
+}
+
+.modal-pagos-body {
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.modal-pagos-body form {
+    padding: 0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2C2C2E;
+    font-size: 0.95rem;
+}
+
+.input-field,
+.select-input,
+.textarea-field {
+    width: 100%;
+    padding: 12px;
+    border: 1.5px solid #E5E5E7;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.input-field:focus,
+.select-input:focus,
+.textarea-field:focus {
+    outline: none;
+    border-color: #007AFF;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.textarea-field {
+    resize: vertical;
+}
+
+.modal-pagos-footer {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding: 20px 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 0 0 28px 28px;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 13px 24px;
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+}
+
+.btn-secondary {
+    background: rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #1D1D1F;
+}
+
+.btn-secondary:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+}
+
+/* Loading */
+.loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10001;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-overlay.active {
+    display: flex;
+}
+
+.loading-spinner {
+    text-align: center;
+    color: white;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Tabla de Pagos Multipago - Scroll Horizontal Invisible e Independiente */
+.tabla-pagos-multipago {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-bottom: 16px;
+}
+
+.tabla-pagos-multipago::-webkit-scrollbar {
+    display: none;
+}
+
+.tabla-pagos-multipago table {
+    min-width: 100%;
+    border-collapse: collapse;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .efectivo-principal-card {
+        padding: 24px 20px;
+    }
+
+    .efectivo-amount {
+        font-size: 2.2rem;
+    }
+
+    .controles-movimiento {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-pagos {
+        grid-template-columns: 1fr;
+    }
+
+    .filtros-historial {
+        flex-direction: column;
+    }
+
+    .search-container {
+        max-width: 100%;
+    }
+
+    .nomina-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .calendario-dia-header {
+        font-size: 0.75rem;
+        padding: 8px;
+    }
+
+    /* Responsive específico de modales pagos - EXACTO COMO CRÉDITOS */
+    .modal-pagos-wrapper {
+        padding: 20px;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .modal-pagos-content {
+        width: 100%;
+        max-width: 100%;
+        max-height: 85vh;
+        border-radius: 28px !important;
+        margin: 0 auto !important;
+    }
+
+    .modal-pagos-header {
+        padding: 24px 24px 20px;
+        border-radius: 28px 28px 0 0;
+    }
+
+    .modal-pagos-header h3 {
+        font-size: 1.3rem;
+    }
+
+    .modal-pagos-body {
+        padding: 24px;
+    }
+}

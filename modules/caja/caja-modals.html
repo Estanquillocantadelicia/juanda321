@@ -1,0 +1,367 @@
+
+<!-- Modal: Apertura de Caja -->
+<div id="modal-apertura" class="modal-caja">
+    <div class="modal-caja-wrapper">
+        <div class="modal-caja-content modal-large">
+            <div class="modal-caja-header">
+                <h2>Apertura de Caja</h2>
+                <button class="modal-caja-close" id="modal-apertura-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-caja-body">
+                <form id="form-apertura">
+                    <!-- Resumen de Caja Anterior (si existe) -->
+                    <div class="resumen-turno-cierre" id="resumen-caja-anterior" style="display: none;">
+                        <h4>Resumen de Caja Anterior</h4>
+                        <div class="resumen-grid">
+                            <div class="resumen-item">
+                                <span class="resumen-label">Saldo Final</span>
+                                <span class="resumen-valor" id="resumen-saldo-anterior">$0</span>
+                            </div>
+                            <div class="resumen-item">
+                                <span class="resumen-label">Fecha Cierre</span>
+                                <span class="resumen-valor" id="resumen-fecha-anterior" style="font-size: 1rem;">—</span>
+                            </div>
+                            <div class="resumen-item">
+                                <span class="resumen-label">Vendedor</span>
+                                <span class="resumen-valor" id="resumen-vendedor-anterior" style="font-size: 1rem;">—</span>
+                            </div>
+                            <div class="resumen-item total">
+                                <span class="resumen-label">Estado</span>
+                                <span class="resumen-valor" id="resumen-estado-anterior" style="font-size: 1rem;">Cerrado</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Monto Inicial en Efectivo *</label>
+                        <input type="number" id="monto-inicial" step="0.01" required placeholder="0.00" readonly>
+                        <small style="color: #6D6D80; margin-top: 4px; display: block;">El monto se calcula automáticamente con la calculadora</small>
+                    </div>
+                    
+                    <!-- Calculadora de Denominaciones -->
+                    <div class="calculadora-efectivo">
+                        <div class="calculadora-header">
+                            <h4>Calculadora de Conteo</h4>
+                            <button type="button" class="btn-reset-calc" id="btn-reset-apertura">
+                                <span class="icon">🔄</span> Limpiar
+                            </button>
+                        </div>
+                        
+                        <div class="denominaciones-grid">
+                            <!-- Billetes -->
+                            <div class="denominacion-group">
+                                <h5>Billetes</h5>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$100,000</span>
+                                    <input type="number" class="denom-cantidad" data-valor="100000" min="0" placeholder="0">
+                                    <span class="denom-total">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$50,000</span>
+                                    <input type="number" class="denom-cantidad" data-valor="50000" min="0" placeholder="0">
+                                    <span class="denom-total">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$20,000</span>
+                                    <input type="number" class="denom-cantidad" data-valor="20000" min="0" placeholder="0">
+                                    <span class="denom-total">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$10,000</span>
+                                    <input type="number" class="denom-cantidad" data-valor="10000" min="0" placeholder="0">
+                                    <span class="denom-total">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$5,000</span>
+                                    <input type="number" class="denom-cantidad" data-valor="5000" min="0" placeholder="0">
+                                    <span class="denom-total">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$2,000</span>
+                                    <input type="number" class="denom-cantidad" data-valor="2000" min="0" placeholder="0">
+                                    <span class="denom-total">$0</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Monedas -->
+                            <div class="denominacion-group">
+                                <h5>Monedas</h5>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$1,000</span>
+                                    <input type="number" class="denom-cantidad" data-valor="1000" min="0" placeholder="0">
+                                    <span class="denom-total">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$500</span>
+                                    <input type="number" class="denom-cantidad" data-valor="500" min="0" placeholder="0">
+                                    <span class="denom-total">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$200</span>
+                                    <input type="number" class="denom-cantidad" data-valor="200" min="0" placeholder="0">
+                                    <span class="denom-total">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$100</span>
+                                    <input type="number" class="denom-cantidad" data-valor="100" min="0" placeholder="0">
+                                    <span class="denom-total">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$50</span>
+                                    <input type="number" class="denom-cantidad" data-valor="50" min="0" placeholder="0">
+                                    <span class="denom-total">$0</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="calculadora-total">
+                            <span>Total Contado:</span>
+                            <span class="total-calculado" id="total-apertura">$0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Notas (Opcional)</label>
+                        <textarea id="notas-apertura" rows="3" placeholder="Observaciones adicionales..."></textarea>
+                    </div>
+                    
+                    <div class="modal-caja-footer">
+                        <button type="button" class="btn btn-secondary" id="btn-cancelar-apertura">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Abrir Caja</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Cierre de Caja -->
+<div id="modal-cierre" class="modal-caja">
+    <div class="modal-caja-wrapper">
+        <div class="modal-caja-content modal-large">
+            <div class="modal-caja-header">
+                <h2>Cierre de Caja</h2>
+                <button class="modal-caja-close" id="modal-cierre-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-caja-body">
+                <form id="form-cierre">
+                    <!-- Resumen del Turno (como tarjeta informativa arriba) -->
+                    <div class="resumen-turno-cierre">
+                        <h4>Resumen del Turno</h4>
+                        <div class="resumen-grid">
+                            <div class="resumen-item">
+                                <span class="resumen-label">Monto Inicial</span>
+                                <span class="resumen-valor" id="resumen-inicial">$0</span>
+                            </div>
+                            <div class="resumen-item">
+                                <span class="resumen-label">Ventas Efectivo</span>
+                                <span class="resumen-valor" id="resumen-ventas-efectivo">$0</span>
+                            </div>
+                            <div class="resumen-item">
+                                <span class="resumen-label">Ingresos Extra</span>
+                                <span class="resumen-valor" id="resumen-ingresos">$0</span>
+                            </div>
+                            <div class="resumen-item">
+                                <span class="resumen-label">Egresos</span>
+                                <span class="resumen-valor" id="resumen-egresos">$0</span>
+                            </div>
+                            <div class="resumen-item total">
+                                <span class="resumen-label">Efectivo Esperado</span>
+                                <span class="resumen-valor" id="resumen-esperado">$0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Efectivo Real Contado *</label>
+                        <input type="number" id="efectivo-real" step="0.01" required placeholder="0.00" readonly>
+                        <small style="color: #6D6D80; margin-top: 4px; display: block;">El monto se calcula automáticamente con la calculadora</small>
+                    </div>
+                    
+                    <!-- Calculadora de Denominaciones -->
+                    <div class="calculadora-efectivo">
+                        <div class="calculadora-header">
+                            <h4>Calculadora de Conteo</h4>
+                            <button type="button" class="btn-reset-calc" id="btn-reset-cierre">
+                                <span class="icon">🔄</span> Limpiar
+                            </button>
+                        </div>
+                        
+                        <div class="denominaciones-grid">
+                            <!-- Billetes -->
+                            <div class="denominacion-group">
+                                <h5>Billetes</h5>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$100,000</span>
+                                    <input type="number" class="denom-cantidad-cierre" data-valor="100000" min="0" placeholder="0">
+                                    <span class="denom-total-cierre">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$50,000</span>
+                                    <input type="number" class="denom-cantidad-cierre" data-valor="50000" min="0" placeholder="0">
+                                    <span class="denom-total-cierre">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$20,000</span>
+                                    <input type="number" class="denom-cantidad-cierre" data-valor="20000" min="0" placeholder="0">
+                                    <span class="denom-total-cierre">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$10,000</span>
+                                    <input type="number" class="denom-cantidad-cierre" data-valor="10000" min="0" placeholder="0">
+                                    <span class="denom-total-cierre">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$5,000</span>
+                                    <input type="number" class="denom-cantidad-cierre" data-valor="5000" min="0" placeholder="0">
+                                    <span class="denom-total-cierre">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$2,000</span>
+                                    <input type="number" class="denom-cantidad-cierre" data-valor="2000" min="0" placeholder="0">
+                                    <span class="denom-total-cierre">$0</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Monedas -->
+                            <div class="denominacion-group">
+                                <h5>Monedas</h5>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$1,000</span>
+                                    <input type="number" class="denom-cantidad-cierre" data-valor="1000" min="0" placeholder="0">
+                                    <span class="denom-total-cierre">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$500</span>
+                                    <input type="number" class="denom-cantidad-cierre" data-valor="500" min="0" placeholder="0">
+                                    <span class="denom-total-cierre">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$200</span>
+                                    <input type="number" class="denom-cantidad-cierre" data-valor="200" min="0" placeholder="0">
+                                    <span class="denom-total-cierre">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$100</span>
+                                    <input type="number" class="denom-cantidad-cierre" data-valor="100" min="0" placeholder="0">
+                                    <span class="denom-total-cierre">$0</span>
+                                </div>
+                                <div class="denominacion-item">
+                                    <span class="denom-valor">$50</span>
+                                    <input type="number" class="denom-cantidad-cierre" data-valor="50" min="0" placeholder="0">
+                                    <span class="denom-total-cierre">$0</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="calculadora-total">
+                            <span>Total Contado:</span>
+                            <span class="total-calculado" id="total-cierre">$0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="diferencia-alert" id="diferencia-alert" style="display: none;">
+                        <span id="diferencia-mensaje"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Notas de Cierre (Opcional)</label>
+                        <textarea id="notas-cierre" rows="3" placeholder="Observaciones del cierre..."></textarea>
+                    </div>
+                    
+                    <div class="modal-caja-footer">
+                        <button type="button" class="btn btn-secondary" id="btn-cancelar-cierre">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Cerrar Caja</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Nuevo Ingreso/Egreso -->
+<div id="modal-movimiento" class="modal-caja">
+    <div class="modal-caja-wrapper">
+        <div class="modal-caja-content">
+            <div class="modal-caja-header">
+                <h2 id="modal-movimiento-title">Nuevo Movimiento</h2>
+                <button class="modal-caja-close" id="modal-movimiento-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-caja-body">
+                <form id="form-movimiento">
+                    <input type="hidden" id="tipo-movimiento">
+                    <div class="form-group">
+                        <label>Monto *</label>
+                        <input type="number" id="monto-movimiento" step="0.01" required placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria *</label>
+                        <select id="categoria-movimiento" required>
+                            <!-- Las opciones se cargarán dinámicamente según el tipo -->
+                        </select>
+                    </div>
+                    <div class="form-group" id="concepto-group" style="display: none;">
+                        <label>Concepto *</label>
+                        <input type="text" id="concepto-movimiento" placeholder="Describe el movimiento...">
+                    </div>
+                    <div class="form-group">
+                        <label>Observaciones (Opcional)</label>
+                        <textarea id="notas-movimiento" rows="3" placeholder="Detalles adicionales del movimiento..."></textarea>
+                    </div>
+                    <div class="modal-caja-footer">
+                        <button type="button" class="btn btn-secondary" id="btn-cancelar-movimiento">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Resultado del Arqueo (post-cierre) -->
+<div id="modal-resultado-cierre" class="modal-caja">
+    <div class="modal-caja-wrapper">
+        <div class="modal-caja-content modal-resultado-content">
+            <div class="modal-caja-header modal-resultado-header">
+                <h2>Resultado del Arqueo</h2>
+            </div>
+            <div class="modal-caja-body" id="resultado-cierre-content">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Detalle de Caja -->
+<div id="modal-detalle-caja" class="modal-caja">
+    <div class="modal-caja-wrapper">
+        <div class="modal-caja-content modal-large">
+            <div class="modal-caja-header">
+                <h2>Detalle de Caja</h2>
+                <button class="modal-caja-close" id="modal-detalle-caja-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-caja-body">
+                <div id="detalle-caja-content"></div>
+            </div>
+        </div>
+    </div>
+</div>

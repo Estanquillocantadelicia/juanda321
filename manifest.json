@@ -1,0 +1,67 @@
+{
+  "name": "Sistema de Gestión Empresarial",
+  "short_name": "SistemaGestión",
+  "description": "Sistema integral de gestión empresarial con módulos de caja, ventas, inventario, créditos y más",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#007AFF",
+  "background_color": "#FFFFFF",
+  "icons": [
+    {
+      "src": "generated-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "generated-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "generated-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "screenshots": [
+    {
+      "src": "generated-icon.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Abrir Caja",
+      "short_name": "Caja",
+      "description": "Acceso rápido al módulo de caja",
+      "url": "/?module=caja",
+      "icons": [
+        {
+          "src": "generated-icon.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Registrar Venta",
+      "short_name": "Ventas",
+      "description": "Acceso rápido al módulo de ventas",
+      "url": "/?module=ventas",
+      "icons": [
+        {
+          "src": "generated-icon.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
+}

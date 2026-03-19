@@ -1,0 +1,667 @@
+
+<div class="reportes-module">
+    <!-- Header con Título y Filtros Globales -->
+    <div class="reportes-header">
+        <div class="reportes-title-section">
+            <h2 class="reportes-module-title">
+                <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+                Reportes
+            </h2>
+            <div class="reportes-date-filter">
+                <div class="date-filter-wrapper">
+                    <svg class="filter-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <select id="filtro-periodo-global" class="periodo-select">
+                        <option value="hoy">Hoy</option>
+                        <option value="ayer">Ayer</option>
+                        <option value="semana" selected>Esta Semana</option>
+                        <option value="mes">Este Mes</option>
+                        <option value="trimestre">Último Trimestre</option>
+                        <option value="año">Este Año</option>
+                        <option value="personalizado">Personalizado</option>
+                    </select>
+                </div>
+                <div class="date-range-custom" id="date-range-custom" style="display: none;">
+                    <input type="date" id="fecha-inicio" class="date-input">
+                    <span class="date-separator">a</span>
+                    <input type="date" id="fecha-fin" class="date-input">
+                    <button class="btn-aplicar-fechas" id="btn-aplicar-fechas">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </button>
+                </div>
+                <button class="btn-exportar" id="btn-exportar-reporte">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Exportar
+                </button>
+            </div>
+        </div>
+
+        <!-- Sistema de Pestañas -->
+        <div class="reportes-tabs-wrapper">
+            <div class="reportes-tabs">
+                <button class="reportes-tab active" data-tab="resumen">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    <span class="tab-text">Resumen</span>
+                </button>
+                <button class="reportes-tab" data-tab="ventas">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    <span class="tab-text">Ventas</span>
+                </button>
+                <button class="reportes-tab" data-tab="inventario">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                    <span class="tab-text">Inventario</span>
+                </button>
+                <button class="reportes-tab" data-tab="creditos">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span class="tab-text">Créditos</span>
+                </button>
+                <div class="tab-indicator"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 1: RESUMEN EJECUTIVO -->
+    <div class="tab-content active" id="tab-resumen">
+        <div class="resumen-container">
+            <!-- KPIs Principales -->
+            <div class="kpi-grid">
+                <div class="kpi-card kpi-ventas">
+                    <div class="kpi-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Ventas Totales</span>
+                        <span class="kpi-value" id="kpi-ventas-total">$0</span>
+                        <div class="kpi-trend positive" id="kpi-ventas-trend">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                <polyline points="17 6 23 6 23 12"></polyline>
+                            </svg>
+                            <span>+0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="kpi-card kpi-ganancias">
+                    <div class="kpi-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                            <polyline points="17 6 23 6 23 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Utilidad Neta</span>
+                        <span class="kpi-value" id="kpi-utilidad-total">$0</span>
+                        <div class="kpi-trend positive" id="kpi-utilidad-trend">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                <polyline points="17 6 23 6 23 12"></polyline>
+                            </svg>
+                            <span>+0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="kpi-card kpi-transacciones">
+                    <div class="kpi-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                    </div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Transacciones</span>
+                        <span class="kpi-value" id="kpi-transacciones">0</span>
+                        <div class="kpi-trend neutral" id="kpi-transacciones-trend">
+                            <span>este período</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="kpi-card kpi-ticket">
+                    <div class="kpi-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="6"></circle>
+                            <circle cx="12" cy="12" r="2"></circle>
+                        </svg>
+                    </div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Ticket Promedio</span>
+                        <span class="kpi-value" id="kpi-ticket-promedio">$0</span>
+                        <div class="kpi-trend neutral" id="kpi-ticket-trend">
+                            <span>por venta</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráficos Principales -->
+            <div class="charts-grid">
+                <div class="chart-card chart-large">
+                    <div class="chart-header">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                            Ventas por Período
+                        </h3>
+                        <div class="chart-legend" id="chart-ventas-legend"></div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chart-ventas-periodo"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                            </svg>
+                            Métodos de Pago
+                        </h3>
+                    </div>
+                    <div class="chart-container chart-pie-container">
+                        <canvas id="chart-metodos-pago"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPIs Secundarios: Gastos y Utilidad Libre -->
+            <div class="kpi-grid kpi-grid-secondary">
+                <div class="kpi-card kpi-gastos">
+                    <div class="kpi-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <polyline points="17 5 12 12 7 5"></polyline>
+                        </svg>
+                    </div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Gastos Operativos</span>
+                        <span class="kpi-value" id="kpi-gastos-total">$0</span>
+                        <div class="kpi-trend neutral">
+                            <span>Pagos + Nomina</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="kpi-card kpi-libre">
+                    <div class="kpi-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <polyline points="9 12 12 15 16 10"></polyline>
+                        </svg>
+                    </div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Utilidad Libre</span>
+                        <span class="kpi-value" id="kpi-utilidad-libre">$0</span>
+                        <div class="kpi-trend neutral">
+                            <span>Lo que te queda</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen Financiero Detallado -->
+            <div class="financial-card">
+                <div class="financial-header">
+                    <h3>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                            <line x1="1" y1="10" x2="23" y2="10"></line>
+                        </svg>
+                        Resumen Financiero del Período
+                    </h3>
+                </div>
+                <div id="resumen-financiero">
+                    <div class="empty-state-mini">Cargando resumen...</div>
+                </div>
+            </div>
+
+            <!-- Top Productos y Resumen Rápido -->
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-header">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                            Top 5 Productos
+                        </h3>
+                    </div>
+                    <div class="top-products-list" id="top-products-list">
+                        <div class="empty-state-mini">Sin datos disponibles</div>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-header">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            Alertas del Sistema
+                        </h3>
+                    </div>
+                    <div class="alerts-list" id="system-alerts-list">
+                        <div class="empty-state-mini">Sin alertas pendientes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: VENTAS Y FINANZAS -->
+    <div class="tab-content" id="tab-ventas">
+        <div class="ventas-reportes-container">
+            <!-- Estadísticas de Ventas -->
+            <div class="stats-cards-row">
+                <div class="stat-card-mini" style="--card-color: #34C759;">
+                    <div class="stat-mini-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-mini-content">
+                        <span class="stat-mini-value" id="stat-efectivo-total">$0</span>
+                        <span class="stat-mini-label">Efectivo</span>
+                    </div>
+                </div>
+                <div class="stat-card-mini" style="--card-color: #007AFF;">
+                    <div class="stat-mini-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                            <line x1="1" y1="10" x2="23" y2="10"></line>
+                        </svg>
+                    </div>
+                    <div class="stat-mini-content">
+                        <span class="stat-mini-value" id="stat-tarjeta-total">$0</span>
+                        <span class="stat-mini-label">Tarjeta</span>
+                    </div>
+                </div>
+                <div class="stat-card-mini" style="--card-color: #5856D6;">
+                    <div class="stat-mini-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                        </svg>
+                    </div>
+                    <div class="stat-mini-content">
+                        <span class="stat-mini-value" id="stat-transferencia-total">$0</span>
+                        <span class="stat-mini-label">Transferencia</span>
+                    </div>
+                </div>
+                <div class="stat-card-mini" style="--card-color: #FF9500;">
+                    <div class="stat-mini-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                            <line x1="1" y1="10" x2="23" y2="10"></line>
+                        </svg>
+                    </div>
+                    <div class="stat-mini-content">
+                        <span class="stat-mini-value" id="stat-credito-total">$0</span>
+                        <span class="stat-mini-label">Crédito</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráficos de Ventas -->
+            <div class="ventas-charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                            </svg>
+                            Utilidad vs Gastos Operativos
+                        </h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chart-ingresos-gastos"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            Ventas por Hora del Día
+                        </h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chart-ventas-hora"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Ventas Detallada -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                        </svg>
+                        Resumen de Ventas por Día
+                    </h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="reportes-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Transacciones</th>
+                                <th>Total Ventas</th>
+                                <th>Utilidad</th>
+                                <th>Ticket Prom.</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-ventas-diarias">
+                            <tr>
+                                <td colspan="5" class="empty-table">Sin datos para el período seleccionado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: INVENTARIO -->
+    <div class="tab-content" id="tab-inventario">
+        <div class="inventario-reportes-container">
+            <!-- Alertas de Stock -->
+            <div class="stock-alerts-section">
+                <div class="alerts-header">
+                    <h3>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        Productos con Stock Bajo
+                    </h3>
+                    <span class="alert-count" id="stock-bajo-count">0</span>
+                </div>
+                <div class="stock-alerts-grid" id="stock-bajo-grid">
+                    <div class="empty-state-card">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span>Todos los productos tienen stock suficiente</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráficos de Inventario -->
+            <div class="inventario-charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            </svg>
+                            Valor del Inventario por Categoría
+                        </h3>
+                    </div>
+                    <div class="chart-container chart-pie-container">
+                        <canvas id="chart-inventario-categoria"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                <polyline points="17 6 23 6 23 12"></polyline>
+                            </svg>
+                            Rotación de Inventario
+                        </h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chart-rotacion"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Productos -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                        Productos Más Vendidos
+                    </h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="reportes-table">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Categoría</th>
+                                <th>Unidades Vendidas</th>
+                                <th>Total Ventas</th>
+                                <th>Stock Actual</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-productos-vendidos">
+                            <tr>
+                                <td colspan="5" class="empty-table">Sin datos para el período seleccionado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 4: CRÉDITOS Y CLIENTES -->
+    <div class="tab-content" id="tab-creditos">
+        <div class="creditos-reportes-container">
+            <!-- KPIs de Créditos -->
+            <div class="creditos-kpi-grid">
+                <div class="credito-kpi-card" style="--kpi-color: #FF3B30;">
+                    <div class="credito-kpi-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <div class="credito-kpi-content">
+                        <span class="credito-kpi-value" id="kpi-cartera-total">$0</span>
+                        <span class="credito-kpi-label">Cartera Total</span>
+                    </div>
+                </div>
+                <div class="credito-kpi-card" style="--kpi-color: #FF9500;">
+                    <div class="credito-kpi-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+                    <div class="credito-kpi-content">
+                        <span class="credito-kpi-value" id="kpi-vencidos">$0</span>
+                        <span class="credito-kpi-label">Créditos Vencidos</span>
+                    </div>
+                </div>
+                <div class="credito-kpi-card" style="--kpi-color: #34C759;">
+                    <div class="credito-kpi-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="credito-kpi-content">
+                        <span class="credito-kpi-value" id="kpi-cobrado-periodo">$0</span>
+                        <span class="credito-kpi-label">Cobrado en Período</span>
+                    </div>
+                </div>
+                <div class="credito-kpi-card" style="--kpi-color: #007AFF;">
+                    <div class="credito-kpi-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <div class="credito-kpi-content">
+                        <span class="credito-kpi-value" id="kpi-clientes-credito">0</span>
+                        <span class="credito-kpi-label">Clientes con Crédito</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráficos de Créditos -->
+            <div class="creditos-charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                            </svg>
+                            Estado de Cartera
+                        </h3>
+                    </div>
+                    <div class="chart-container chart-pie-container">
+                        <canvas id="chart-estado-cartera"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                            Cobranza del Período
+                        </h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chart-cobranza"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Clientes con Crédito -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        Clientes con Mayor Deuda
+                    </h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="reportes-table">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Teléfono</th>
+                                <th>Créditos Activos</th>
+                                <th>Deuda Total</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-clientes-deuda">
+                            <tr>
+                                <td colspan="5" class="empty-table">Sin clientes con crédito activo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Exportación -->
+<div id="modal-exportar" class="modal">
+    <div class="modal-content modal-exportar">
+        <div class="modal-header">
+            <h3>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Exportar Reporte
+            </h3>
+            <button class="modal-close" id="modal-exportar-close">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="export-options">
+                <button class="export-option" id="export-pdf">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                    </svg>
+                    <span>Exportar PDF</span>
+                </button>
+                <button class="export-option" id="export-excel">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="3" y1="9" x2="21" y2="9"></line>
+                        <line x1="3" y1="15" x2="21" y2="15"></line>
+                        <line x1="9" y1="3" x2="9" y2="21"></line>
+                        <line x1="15" y1="3" x2="15" y2="21"></line>
+                    </svg>
+                    <span>Exportar Excel</span>
+                </button>
+                <button class="export-option" id="export-print">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                        <rect x="6" y="14" width="12" height="8"></rect>
+                    </svg>
+                    <span>Imprimir</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

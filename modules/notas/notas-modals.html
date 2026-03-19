@@ -1,0 +1,131 @@
+
+<!-- Modal: Nueva Nota -->
+<div id="modal-nueva-nota" class="modal-notas">
+    <div class="modal-notas-wrapper">
+        <div class="modal-notas-content">
+            <div class="modal-notas-header">
+                <h2>Crear Nota</h2>
+                <button class="modal-notas-close" id="modal-nueva-nota-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <form id="form-nueva-nota">
+                <div class="form-group-nota">
+                    <label>Mensaje</label>
+                    <textarea id="nota-contenido" rows="4" placeholder="Escribe tu mensaje aquí..." required maxlength="280"></textarea>
+                    <span class="char-counter"><span id="char-count">0</span>/280</span>
+                </div>
+
+                <div class="form-group-nota">
+                    <label>Color de la nota</label>
+                    <div class="color-selector">
+                        <label class="color-option">
+                            <input type="radio" name="nota-color" value="amarillo" checked>
+                            <span class="color-swatch amarillo"></span>
+                        </label>
+                        <label class="color-option">
+                            <input type="radio" name="nota-color" value="rosa">
+                            <span class="color-swatch rosa"></span>
+                        </label>
+                        <label class="color-option">
+                            <input type="radio" name="nota-color" value="verde">
+                            <span class="color-swatch verde"></span>
+                        </label>
+                        <label class="color-option">
+                            <input type="radio" name="nota-color" value="azul">
+                            <span class="color-swatch azul"></span>
+                        </label>
+                        <label class="color-option">
+                            <input type="radio" name="nota-color" value="naranja">
+                            <span class="color-swatch naranja"></span>
+                        </label>
+                        <label class="color-option">
+                            <input type="radio" name="nota-color" value="morado">
+                            <span class="color-swatch morado"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group-nota">
+                    <label>Prioridad</label>
+                    <div class="prioridad-selector">
+                        <label class="prioridad-option">
+                            <input type="radio" name="nota-prioridad" value="normal" checked>
+                            <span class="prioridad-badge normal">Normal</span>
+                        </label>
+                        <label class="prioridad-option">
+                            <input type="radio" name="nota-prioridad" value="urgente">
+                            <span class="prioridad-badge urgente">Urgente</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group-nota">
+                    <label>Visible para</label>
+                    <select id="nota-destinatario">
+                        <option value="todos">Todos los usuarios</option>
+                        <option value="administrador">Solo administradores</option>
+                        <option value="vendedor">Solo vendedores</option>
+                    </select>
+                </div>
+
+                <div class="form-group-nota">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="nota-auto-eliminar">
+                        <span class="checkbox-custom"></span>
+                        Auto-eliminar después de 24 horas
+                    </label>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancelar-nota" id="btn-cancelar-nota">Cancelar</button>
+                    <button type="submit" class="btn-crear-nota">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        Crear Nota
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Ver Nota Completa -->
+<div id="modal-ver-nota" class="modal-notas">
+    <div class="modal-notas-wrapper">
+        <div class="modal-notas-content modal-ver">
+            <div class="modal-notas-header">
+                <h2>Detalle de Nota</h2>
+                <button class="modal-notas-close" id="modal-ver-nota-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="nota-detalle-content" id="nota-detalle-content">
+                <!-- Contenido dinámico -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-eliminar-nota" id="btn-eliminar-nota" style="display: none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    Eliminar
+                </button>
+                <button type="button" class="btn-marcar-leida" id="btn-marcar-leida">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

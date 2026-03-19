@@ -1,0 +1,465 @@
+<div class="inventario-module">
+    <!-- Sistema de Pestañas Estilo Apple -->
+    <div class="inventario-tabs-wrapper">
+        <div class="inventario-tabs">
+            <button class="inventario-tab active" data-tab="productos">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+                <span class="tab-text">Productos</span>
+            </button>
+            <button class="inventario-tab" data-tab="simulacion">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <span class="tab-text">Simulación</span>
+            </button>
+            <button class="inventario-tab" data-tab="precios-clientes">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+                <span class="tab-text">Precios Clientes</span>
+            </button>
+            <div class="tab-indicator"></div>
+        </div>
+    </div>
+
+    <!-- PESTAÑA 1: PRODUCTOS (vista actual) -->
+    <div id="tab-productos" class="inventario-tab-content active">
+        <!-- Cards de estadísticas -->
+        <div id="inventario-stats" class="inventario-stats"></div>
+
+        <!-- Barra de acciones superior -->
+        <div class="module-header">
+        <div class="module-actions">
+            <button id="btn-nuevo-producto" class="btn-primary">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+                <span>Nuevo Producto</span>
+            </button>
+            <button id="btn-gestionar-categorias" class="btn-secondary">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                    <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                </svg>
+                <span>Categorías</span>
+            </button>
+            <div class="search-container">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="search-productos" placeholder="Buscar productos..." class="search-input">
+            </div>
+        </div>
+        <div class="module-filters">
+            <select id="filter-categoria" class="filter-select">
+                <option value="">Todas las categorías</option>
+            </select>
+            <select id="filter-proveedor" class="filter-select">
+                <option value="">Todos los proveedores</option>
+            </select>
+            <select id="filter-tipo" class="filter-select">
+                <option value="">Todos los tipos</option>
+                <option value="simple">Productos Simples</option>
+                <option value="variantes">Con Variantes</option>
+                <option value="conversion">Con Conversión</option>
+            </select>
+            <select id="filter-stock" class="filter-select">
+                <option value="">Todo el stock</option>
+                <option value="bajo">Stock Bajo</option>
+                <option value="agotado">Agotado</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Tabla de productos -->
+    <div class="productos-table-container" style="overflow-x: auto !important; display: block !important; width: 100% !important;">
+        <table class="productos-table" style="min-width: 1850px !important; width: auto !important;">
+            <thead>
+                                <tr>
+                                    <th style="width: 50px; text-align: center;" id="header-checkbox-container"></th>
+                                    <th style="width: 40px;">
+                                        <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </th>
+                                    <th style="min-width: 200px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                            </svg>
+                                            <span>Producto</span>
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 120px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                                            </svg>
+                                            <span>Categoría</span>
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 150px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="1" y="3" width="15" height="13"></rect>
+                                                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                                                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                                                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                                            </svg>
+                                            <span>Proveedor</span>
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 100px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                                <polyline points="2 17 12 22 22 17"></polyline>
+                                                <polyline points="2 12 12 17 22 12"></polyline>
+                                            </svg>
+                                            <span>Tipo</span>
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 100px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                            </svg>
+                                            <span>P. Costo</span>
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 100px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="9" cy="21" r="1"></circle>
+                                                <circle cx="20" cy="21" r="1"></circle>
+                                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                            </svg>
+                                            <span>P. Público</span>
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 120px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                <circle cx="9" cy="7" r="4"></circle>
+                                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                            </svg>
+                                            <span>P. Mayorista</span>
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 80px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                                            </svg>
+                                            <span>Stock</span>
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 100px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                            </svg>
+                                            <span>Subtotal</span>
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 120px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                            <span>Util. Público</span>
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 120px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                                <polyline points="20 17 22 15 20 13"></polyline>
+                                                <polyline points="4 7 2 9 4 11"></polyline>
+                                            </svg>
+                                            <span>Util. Mayorista</span>
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 100px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                            <span>Estado</span>
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 120px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <svg class="table-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="1"></circle>
+                                                <circle cx="12" cy="5" r="1"></circle>
+                                                <circle cx="12" cy="19" r="1"></circle>
+                                            </svg>
+                                            <span>Acciones</span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+            <tbody id="productos-table-body">
+                <!-- Los productos se cargarán dinámicamente aquí -->
+            </tbody>
+        </table>
+    </div>
+    <!-- Loading overlay -->
+    <div id="loading-overlay-inventario" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Procesando...</p>
+        </div>
+    </div>
+    </div>
+
+    <!-- PESTAÑA 2: SIMULACIÓN DE PEDIDOS -->
+    <div id="tab-simulacion" class="inventario-tab-content">
+        <!-- Header de simulación -->
+        <div class="simulacion-header">
+            <!-- Selector de tipo de simulación -->
+            <div class="tipo-simulacion-selector">
+                <label>Tipo de Simulación:</label>
+                <div class="tipo-simulacion-tabs">
+                    <button class="tipo-sim-tab active" data-tipo="proveedor">
+                        <svg class="tab-icon-sim" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="3" width="15" height="13"></rect>
+                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                        </svg>
+                        Por Proveedor
+                    </button>
+                    <button class="tipo-sim-tab" data-tipo="cliente">
+                        <svg class="tab-icon-sim" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        Por Cliente
+                    </button>
+                </div>
+            </div>
+
+            <!-- Selector de Proveedor -->
+            <div id="selector-proveedor-container" class="proveedor-selector">
+                <label for="simulacion-select-proveedor">Seleccionar Proveedor:</label>
+                <select id="simulacion-select-proveedor" class="proveedor-select">
+                    <option value="">-- Seleccione un proveedor --</option>
+                </select>
+            </div>
+
+            <!-- Selector de Cliente (oculto por defecto) -->
+            <div id="selector-cliente-container" class="cliente-selector hidden">
+                <label for="simulacion-select-cliente-pedido">Seleccionar Cliente:</label>
+                <select id="simulacion-select-cliente-pedido" class="cliente-select">
+                    <option value="">-- Seleccione un cliente --</option>
+                </select>
+            </div>
+            <div class="simulacion-actions">
+                <button id="btn-limpiar-simulacion" class="btn-secondary" disabled>
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    <span>Limpiar</span>
+                </button>
+                <button id="btn-exportar-simulacion" class="btn-primary" disabled>
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span>Exportar</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Resumen del pedido -->
+        <div id="simulacion-resumen" class="simulacion-resumen hidden">
+            <div class="resumen-card">
+                <h3 id="simulacion-resumen-titulo">📊 Resumen del Pedido</h3>
+                <div class="resumen-info">
+                    <div class="resumen-item">
+                        <span id="simulacion-label-nombre" class="label">Proveedor:</span>
+                        <span id="simulacion-proveedor-nombre" class="value">-</span>
+                    </div>
+                    <div class="resumen-item">
+                        <span class="label">Productos:</span>
+                        <span id="simulacion-cantidad-productos" class="value">0</span>
+                    </div>
+                    <div class="resumen-item total">
+                        <span class="label">Total:</span>
+                        <span id="simulacion-total" class="value">$0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de simulación -->
+        <div class="simulacion-table-container">
+            <div id="simulacion-empty-state" class="empty-state">
+                <div class="empty-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                </div>
+                <p id="simulacion-empty-text">Selecciona un proveedor para simular un pedido</p>
+            </div>
+
+            <table id="simulacion-table" class="productos-table hidden">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Tipo</th>
+                        <th>Stock Actual</th>
+                        <th id="simulacion-precio-header">Precio Costo</th>
+                        <th>Cantidad a Pedir</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody id="simulacion-table-body"></tbody>
+                <tfoot id="simulacion-table-footer" class="hidden">
+                    <tr>
+                        <td colspan="5" style="text-align: right; font-weight: 600;">TOTAL DEL PEDIDO:</td>
+                        <td id="simulacion-total-pedido" style="font-weight: 700; color: #007AFF; font-size: 1.1rem;">$0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+    <!-- PESTAÑA 3: PRECIOS CLIENTES -->
+    <div id="tab-precios-clientes" class="inventario-tab-content">
+        <!-- Header de precios clientes -->
+        <div class="precios-clientes-header">
+            <div class="cliente-selector">
+                <label for="precios-select-cliente">
+                    <svg class="label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    Seleccionar Cliente:
+                </label>
+                <select id="precios-select-cliente" class="cliente-select">
+                    <option value="">-- Seleccione un cliente --</option>
+                </select>
+            </div>
+            <div class="search-container-precios">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="search-productos-precios" placeholder="Buscar producto..." class="search-input">
+            </div>
+        </div>
+
+        <!-- Filtros rápidos de precios -->
+        <div id="precios-filtros" class="precios-filtros hidden">
+            <div class="filtro-group">
+                <select id="precios-filter-categoria" class="filtro-select">
+                    <option value="">Todas las categorías</option>
+                </select>
+            </div>
+            <div class="filtro-group">
+                <select id="precios-filter-proveedor" class="filtro-select">
+                    <option value="">Todos los proveedores</option>
+                </select>
+            </div>
+            <div class="filtro-group">
+                <button id="btn-solo-asignados" class="btn-filtro-toggle" data-activo="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;flex-shrink:0;">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Solo con precio asignado
+                </button>
+            </div>
+        </div>
+
+        <!-- Resumen de precios asignados -->
+        <div id="precios-resumen" class="precios-resumen hidden">
+            <div class="resumen-card-precios">
+                <div class="resumen-header">
+                    <h3>
+                        <svg class="stats-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <span id="precios-cliente-nombre">Cliente</span>
+                    </h3>
+                </div>
+                <div class="resumen-stats">
+                    <div class="stat-item">
+                        <span class="label">Productos con precio especial:</span>
+                        <span id="precios-total-productos" class="value">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de productos -->
+        <div class="precios-table-container">
+            <div id="precios-empty-state" class="empty-state">
+                <div class="empty-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                </div>
+                <p>Selecciona un cliente para asignar precios especiales</p>
+            </div>
+
+            <table id="precios-table" class="productos-table hidden">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio Costo</th>
+                        <th>Precio Público</th>
+                        <th>Precio Mayorista</th>
+                        <th>Precio Especial</th>
+                        <th>% Ganancia</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="precios-table-body"></tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,267 @@
+
+<div class="compras-module">
+    <!-- Sistema de Pestañas Estilo Apple -->
+    <div class="compras-tabs-wrapper">
+        <div class="compras-tabs">
+            <button class="compras-tab active" data-tab="pedido">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="1" y="3" width="15" height="13"></rect>
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                </svg>
+                <span class="tab-text">Nuevo Pedido</span>
+            </button>
+            <button class="compras-tab" data-tab="estadisticas">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+                <span class="tab-text">Estadísticas</span>
+            </button>
+            <button class="compras-tab" data-tab="historial">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                </svg>
+                <span class="tab-text">Historial</span>
+            </button>
+            <div class="tab-indicator"></div>
+        </div>
+    </div>
+
+    <!-- TAB 1: NUEVO PEDIDO -->
+    <div class="tab-content active" id="tab-pedido">
+        <div class="pedido-container">
+            <!-- Panel Izquierdo: Búsqueda y Productos -->
+            <div class="pedido-left">
+                <div class="pedido-search-section">
+                    <div class="search-container">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input 
+                            type="text" 
+                            id="pedido-search" 
+                            placeholder="Buscar producto por nombre o código..." 
+                            class="search-input"
+                            autocomplete="off"
+                        >
+                        <div id="productos-resultados" class="search-dropdown"></div>
+                    </div>
+                </div>
+
+                <!-- Lista de productos en el pedido -->
+                <div class="pedido-content-area">
+                    <div class="pedido-header">
+                        <h3>
+                            <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                            </svg>
+                            Productos del Pedido
+                        </h3>
+                        <button id="btn-limpiar-pedido" class="btn-clear">Limpiar</button>
+                    </div>
+
+                    <div id="pedido-items" class="pedido-items">
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <rect x="1" y="3" width="15" height="13"></rect>
+                                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                                </svg>
+                            </div>
+                            <p>El pedido está vacío</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel Derecho: Totales y Controles -->
+            <div class="pedido-right">
+                <div class="pedido-form-container">
+                    <!-- Resumen de totales -->
+                    <div class="pedido-totales">
+                        <div class="total-row">
+                            <span>Subtotal:</span>
+                            <span id="pedido-subtotal">$0.00</span>
+                        </div>
+                        <div class="total-row total-final">
+                            <span><strong>TOTAL:</strong></span>
+                            <span id="pedido-total"><strong>$0.00</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Formulario de pedido -->
+                    <div class="pedido-options">
+                        <div class="form-group">
+                            <label>Proveedor <span style="color: #FF3B30;">*</span></label>
+                            <select id="select-proveedor" class="select-input" required>
+                                <option value="">Seleccionar proveedor</option>
+                            </select>
+                            <small style="color: #6D6D80; display: block; margin-top: 4px;">
+                                💡 Se bloquea automáticamente al agregar el primer producto
+                            </small>
+                            <small style="color: #FF9500; display: block; margin-top: 4px; font-weight: 500;">
+                                ⚠️ Todos los productos deben ser del mismo proveedor por pedido
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Método de Pago</label>
+                            <select id="metodo-pago-compra" class="select-input">
+                                <option value="efectivo">Efectivo</option>
+                                <option value="tarjeta">Tarjeta</option>
+                                <option value="transferencia">Transferencia</option>
+                                <option value="credito">Crédito a Proveedor</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Notas del Pedido</label>
+                            <textarea 
+                                id="notas-pedido" 
+                                class="textarea-field" 
+                                rows="3"
+                                placeholder="Notas adicionales sobre el pedido..."
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Botón de procesar -->
+                    <button id="btn-procesar-compra" class="btn-procesar" disabled>
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        <span>Registrar Compra</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: ESTADÍSTICAS -->
+    <div class="tab-content" id="tab-estadisticas">
+        <div class="estadisticas-container">
+            <div class="stats-grid" id="compras-stats-grid">
+                <div class="stats-card" style="background: linear-gradient(135deg, #FF9500, #FF8C00);">
+                    <h3>
+                        <svg class="stats-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        Compras Hoy
+                    </h3>
+                    <p class="stats-value" id="stat-compras-hoy">$0.00</p>
+                    <span class="stats-label" id="stat-compras-hoy-count">0 pedidos</span>
+                </div>
+                <div class="stats-card" style="background: linear-gradient(135deg, #34C759, #30B84A);">
+                    <h3>
+                        <svg class="stats-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        </svg>
+                        Productos Recibidos
+                    </h3>
+                    <p class="stats-value" id="stat-productos-recibidos">0</p>
+                    <span class="stats-label">Hoy</span>
+                </div>
+                <div class="stats-card" style="background: linear-gradient(135deg, #007AFF, #5856D6);">
+                    <h3>
+                        <svg class="stats-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="3" width="15" height="13"></rect>
+                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                        </svg>
+                        Proveedores Activos
+                    </h3>
+                    <p class="stats-value" id="stat-proveedores-activos">0</p>
+                    <span class="stats-label">Este mes</span>
+                </div>
+                <div class="stats-card" style="background: linear-gradient(135deg, #AF52DE, #DA70D6);">
+                    <h3>
+                        <svg class="stats-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        Compras del Mes
+                    </h3>
+                    <p class="stats-value" id="stat-compras-mes">$0.00</p>
+                    <span class="stats-label" id="stat-compras-mes-count">0 pedidos</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: HISTORIAL -->
+    <div class="tab-content" id="tab-historial">
+        <div class="historial-container">
+            <div class="historial-filters">
+                <div class="search-container">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input 
+                        type="text" 
+                        id="historial-search" 
+                        placeholder="Buscar por folio, proveedor..." 
+                        class="search-input"
+                    >
+                </div>
+                <select id="filter-periodo" class="filter-select">
+                    <option value="hoy">Hoy</option>
+                    <option value="semana">Esta Semana</option>
+                    <option value="mes">Este Mes</option>
+                    <option value="todo">Todo el Historial</option>
+                </select>
+                <select id="filter-proveedor" class="filter-select">
+                    <option value="">Todos los proveedores</option>
+                </select>
+            </div>
+
+            <div class="historial-table-container">
+                <table class="historial-table">
+                    <thead>
+                        <tr>
+                            <th>Folio</th>
+                            <th>Fecha/Hora</th>
+                            <th>Proveedor</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Pago</th>
+                            <th>Recibido Por</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historial-table-body">
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 40px; color: #6D6D80;">
+                                No hay compras registradas
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loading-overlay-compras" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Procesando compra...</p>
+        </div>
+    </div>
+</div>

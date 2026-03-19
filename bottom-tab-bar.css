@@ -1,0 +1,293 @@
+
+/* Bottom Tab Bar - Estilo iOS con glassmorphism */
+.bottom-tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100vw;
+    height: 80px;
+    background: linear-gradient(180deg, 
+        rgba(242, 242, 247, 0.4) 0%, 
+        rgba(242, 242, 247, 0.75) 50%,
+        rgba(242, 242, 247, 0.85) 100%);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 -10px 40px rgba(0, 0, 0, 0.08),
+        0 -2px 10px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    z-index: 1000;
+    padding: 0 max(env(safe-area-inset-right), 16px) env(safe-area-inset-bottom) max(env(safe-area-inset-left), 16px);
+    pointer-events: none;
+    touch-action: pan-y;
+    overflow: hidden;
+}
+
+.tab-bar-container {
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: auto; /* SOLO este contenedor tiene scroll horizontal */
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0 8px;
+    pointer-events: auto; /* Restaurar pointer events solo para el contenedor de tabs */
+    scroll-behavior: smooth;
+    touch-action: pan-x; /* Solo scroll horizontal en este contenedor */
+}
+
+.tab-bar-container::-webkit-scrollbar {
+    display: none;
+}
+
+.tab-bar-items {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    min-width: min-content;
+    padding: 8px 0;
+}
+
+.tab-bar-item {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    min-width: 70px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: transparent;
+    border: none;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+    scroll-snap-align: center; /* Centrar items al hacer scroll */
+}
+
+.tab-bar-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(30px) saturate(160%);
+    -webkit-backdrop-filter: blur(30px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.tab-bar-item:hover::before {
+    opacity: 0.6;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.tab-bar-item.active::before {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    box-shadow: 
+        0 10px 40px rgba(0, 122, 255, 0.2),
+        0 4px 16px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.tab-bar-item:active {
+    transform: scale(0.92);
+}
+
+.tab-icon-wrapper {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.tab-icon-wrapper svg {
+    width: 26px;
+    height: 26px;
+    color: #3C3C43;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    stroke-width: 2;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.tab-bar-item.active .tab-icon-wrapper svg {
+    color: #007AFF;
+    transform: scale(1.15);
+    filter: drop-shadow(0 2px 4px rgba(0, 122, 255, 0.3));
+}
+
+.tab-bar-item:hover .tab-icon-wrapper svg {
+    transform: scale(1.12);
+    color: #007AFF;
+}
+
+.tab-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #3C3C43;
+    transition: all 0.3s ease;
+    letter-spacing: -0.1px;
+    white-space: nowrap;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.tab-bar-item.active .tab-label {
+    color: #007AFF;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 122, 255, 0.2);
+}
+
+/* Indicador de scroll en mobile */
+.scroll-indicator {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
+    display: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .bottom-tab-bar {
+        height: 75px;
+        padding-bottom: max(env(safe-area-inset-bottom), 10px);
+        background: linear-gradient(180deg, 
+            rgba(242, 242, 247, 0.5) 0%, 
+            rgba(242, 242, 247, 0.8) 50%,
+            rgba(242, 242, 247, 0.9) 100%);
+        backdrop-filter: blur(50px) saturate(200%);
+        -webkit-backdrop-filter: blur(50px) saturate(200%);
+        overflow: hidden;
+    }
+    
+    .tab-bar-container {
+        justify-content: flex-start;
+        padding: 0;
+        scroll-snap-type: x proximity; /* Snap suave en scroll */
+    }
+    
+    .tab-bar-items {
+        gap: 4px;
+        padding: 8px 12px;
+    }
+    
+    .tab-bar-item {
+        padding: 8px 12px;
+        min-width: 62px;
+    }
+    
+    .tab-bar-item::before {
+        border-radius: 18px;
+    }
+    
+    .tab-icon-wrapper {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .tab-icon-wrapper svg {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .tab-label {
+        font-size: 10px;
+    }
+    
+    .scroll-indicator {
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    .tab-bar-item {
+        padding: 6px 10px;
+        min-width: 60px;
+    }
+    
+    .tab-icon-wrapper {
+        width: 26px;
+        height: 26px;
+    }
+    
+    .tab-icon-wrapper svg {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+/* Animaciones */
+@keyframes tabPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.tab-bar-item.active {
+    animation: tabPulse 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Efecto sutil de pulso en selección */
+.tab-bar-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: radial-gradient(circle at center, 
+        rgba(0, 122, 255, 0.08) 0%, 
+        transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.tab-bar-item.active::after {
+    opacity: 1;
+    animation: subtlePulse 2s ease-in-out infinite;
+}
+
+@keyframes subtlePulse {
+    0%, 100% { 
+        opacity: 0.5;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+/* Ajuste para que el contenido principal no quede detrás del tab bar */
+.main-content {
+    padding-bottom: 100px !important;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding-bottom: 90px !important;
+    }
+}
