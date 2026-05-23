@@ -11,117 +11,84 @@ Sistema de gestión empresarial integral que busca proporcionar una experiencia 
 - Enfoque: Soluciones precisas sin afectar funcionalidad existente
 - **Módulo inicial después del login**: Notas Internas (remover Dashboard)
 
-## Recent Changes (Dec 20, 2025)
+## Pendientes acordados con Juan (a implementar más adelante)
 
-### FIXED: Dashboard Title Flicker Issue - Complete Solution
-**Causa raíz**: El Service Worker estaba sirviendo una versión cacheada del HTML que tenía "Dashboard" como título
-- **Solución definitiva**: Cambié la estrategia del Service Worker de "Cache First" a "Network First" para index.html
-  - Esto hace que el navegador SIEMPRE intente cargar la versión más reciente desde el servidor primero
-  - Si no hay conexión, ENTONCES usa la versión cacheada
-  - Resultado: Sin parpadeos ni contenido obsoleto, incluso con internet lento
-- **Cambios adicionales para eliminar toda referencia a "dashboard"**:
-  - `bottom-tab-bar.js`: `activeTab = 'dashboard'` → `activeTab = 'notas'`
-  - `auth-system.js`: Removida la verificación especial de 'dashboard' en `filterNavigationByPermissions()`
-  - `module-preloader.js`: Todas las referencias de predicción de 'dashboard' → 'notas'
-  - Service Worker versión: v1 → v2 para forzar limpieza de caché antiguo
-- **Resultado**: Notas Internas carga directamente después del login sin ningún parpadeo visible
+1. **Reglas Firestore más estrictas para cancelar venta**: hoy la UI oculta el botón a no-admin, pero técnicamente un usuario podría llamarlo por consola. Bloquear también a nivel servidor (rules).
+2. **"Caja de ajuste" cuando se cancela sin caja abierta**: hoy si cancelas una venta en efectivo y la caja ya cerró, el reverso se ignora silenciosamente. Mejor guardarlo como pendiente de conciliar.
+3. **Atomicidad real en abonos a crédito**: si dos cajeros abonan al mismo crédito a la vez, puede haber descuadre. Solución: `runTransaction` (complejidad media).
+4. **Alertas proactivas de stock crítico**: notificación visual (banner global) cuando un producto baja de un umbral configurable. Hoy solo se ve en Reportes.
+5. **Backup automático diario**: hoy es manual. Programar job (Cloud Functions, fuera del plan gratuito) o recordatorio en pantalla cada 24-48h.
+
+## Estado actual
+
+- **APP_VERSION**: `20260523-07`
+- **CACHE_NAME**: `sistema-gestion-v53`
+- **Último cambio**: Cambio de contraseña honesto + login limpio. (1) Quitado campo "Nueva contraseña" engañoso del modal Editar Usuario (no hacía nada; ahora botón "Enviar correo de restablecimiento"). (2) Nuevo modal **Mi Perfil** en el menú de usuario, con re-autenticación + `updatePassword` inmediato para que cualquier usuario cambie SU propia contraseña. (3) Login limpio: `autocomplete="new-password"` + `value=""` en input password para que el navegador no autorrellene tras cerrar caja/logout. Detalles en `CHANGELOG.md`.
+
+> 📜 **Histórico completo**: ver [`CHANGELOG.md`](./CHANGELOG.md) para todos los cambios anteriores (devolución v2, venta atómica, scanner, bitácora, respaldos, etc.).
 
 ## Database Analysis & Recommendations
 
-### Current Setup: Firebase (Google) ✓
+### Current Setup: Firebase (Google)
 - **Authentication**: Firebase Auth (emails + passwords)
 - **Database**: Firestore (NoSQL document-based)
-- **Collections**: users, notas_internas, ventas, caja, creditos, inventario, clientes, compras, pagos, proveedores, config
-- **Real-time Syncing**: Yes (via Firestore listeners)
-- **Cloud Functions**: None (todo en el client-side)
+- **Real-time Syncing**: Sí (listeners de Firestore)
+- **Cloud Functions**: ninguna (todo client-side)
 
-### About Free Tier Compatibility ✓✓✓
-**Good news**: Firebase free tier es suficiente para tu aplicación porque:
-- **Lecturas gratuitas**: 50,000/día
-- **Escrituras gratuitas**: 20,000/día
-- **Borrados gratuitos**: 20,000/día
-- **Almacenamiento**: 1 GB gratis
-- **Auth gratuita**: Usuarios ilimitados
+### Free Tier OK para este caso
+Firebase free tier cubre: 50k lecturas/día, 20k escrituras/día, 20k borrados/día, 1 GB de almacenamiento, autenticación ilimitada. Para 1–50 usuarios y ~500–1000 ops/día queda holgado. Si crece a 10 GB+ o se necesita control total del servidor, considerar migrar a PostgreSQL (Replit ofrece 10 GB gratis pero requiere reimplementar auth + reescribir todo el cliente).
 
-**Tu uso estimado**: 
-- Pequeño a Mediano (1-50 usuarios concurrentes)
-- ~500-1000 operaciones/día típicamente
-- **Resultado**: Estarás bien en la versión gratuita ✓
-
-### Alternative: Replit's PostgreSQL Database
-Replit ofrece una base de datos PostgreSQL **gratuita con 10GB** pero:
-- ❌ No incluye autenticación integrada (tendrías que manejarlo aparte)
-- ❌ Requeriría migración de todo el código (cambio importante)
-- ✓ Mejor si tu app crece a 10GB+ de datos
-- ✓ Mejor si quieres control total del servidor
-
-**Recomendación**: Mantén Firebase. Es más simple, está bien integrado, y la versión gratuita cubre tu caso de uso.
-
-### Best Practices for Free Tier ✓
-1. **Índices**: Firestore crea automáticamente índices (gratis en versión gratuita para queries simples)
-2. **Límites**: 25 conexiones simultáneas (suficiente para 50 usuarios)
-3. **Monitoreo**: Checa la consola de Firebase mensualmente para ver uso real
-4. **Optimización**: Usa `limit()` y `where()` para reducir lecturas innecesarias
+### Buenas prácticas
+- Usar `limit()` y `where()` para reducir lecturas innecesarias.
+- Firestore crea índices automáticos para queries simples.
+- Revisar consola Firebase mensualmente para ver uso real.
 
 ## System Architecture
 
-### UI/UX Decisions
-- **Animaciones "Genie Effect"**: Implementación de animaciones profesionales estilo macOS para la navegación entre módulos desde la barra de pestañas inferior, utilizando Web Animations API con transformaciones 3D, blur y easing personalizado.
-- **Skeleton Screens**: Placeholders animados que proporcionan feedback visual inmediato durante la carga de módulos, mejorando la percepción de rendimiento.
-- **Selector de Correos Avanzado**: Reemplazo del `datalist` por un dropdown desplegable con filtrado, expansión/colapso y diseño estilo iOS para una mejor selección de usuarios en el login.
+### UI/UX
+- **Animaciones "Genie Effect"** estilo macOS para navegación entre módulos (Web Animations API + 3D transforms + blur + easing personalizado).
+- **Skeleton Screens** durante la carga de módulos.
+- **Selector de Correos Avanzado** en el login (dropdown con filtrado, estilo iOS).
 
-### Technical Implementations
-- **Frontend**: JavaScript Vanilla para un control total y optimización.
-- **Backend**: Node.js + Express actuando como un servidor de archivos estáticos.
-- **Módulos Dinámicos**: Carga dinámica de módulos con un `ModuleManager` centralizado para una aplicación SPA (Single Page Application) eficiente.
-- **MotionUtils**: Sistema de animaciones encapsulado con `Web Animations API` y easings profesionales (`spring`, `smooth`, `bounce`, `sharp`).
-- **ModulePreloader**: Sistema de caché LRU (Least Recently Used) para HTML de módulos (capacidad: 6 módulos), con predicción de navegación y precarga diferida (1 segundo) para optimizar rendimiento.
-- **Sistema de Carga de Módulos Optimizado**: Gestión inteligente de CSS y JavaScript de módulos que evita conflictos de estilos y duplicación de scripts. Los CSS de módulos anteriores se limpian automáticamente al cambiar de módulo, y los scripts se reutilizan mediante sus funciones de inicialización en lugar de recargarse.
-- **Manejo de Errores Robusto**: Fallbacks automáticos para animaciones, visibilidad garantizada de contenido y `try-catch` en la carga de JS para evitar rupturas.
-- **Sistema de Lock para Cajas**: Implementación de un sistema de lock basado en un documento único por vendedor en Firebase para prevenir la duplicación de cajas abiertas debido a condiciones de carrera en entornos multi-dispositivo.
-- **Limpieza de Event Listeners**: Uso de referencias a manejadores de eventos y un método `destroy()` en cada módulo para limpiar correctamente los listeners del DOM y evitar duplicaciones al recargar módulos.
-- **Patrón Singleton para Módulos**: Prevención de instancias duplicadas de módulos mediante un patrón singleton que destruye la instancia anterior antes de crear una nueva.
-- **Actualización en Tiempo Real**: Notificación al sistema de autenticación sobre cambios en la configuración (ej. nombre del negocio) para una actualización inmediata en la interfaz.
-- **Sistema de Permisos Graduales**: Control de acceso a funcionalidades específicas dentro de módulos habilitados mediante sub-permisos. Usa `window.authSystem.hasSubPermission(modulo, permiso)` para verificar. Los administradores tienen acceso completo automáticamente. Sub-permisos almacenados en Firestore bajo `userData.subPermisos.{modulo}.{permiso}`.
+### Núcleo técnico
+- **Frontend**: JavaScript Vanilla.
+- **Backend**: Node.js + Express (sirve archivos estáticos).
+- **ModuleManager**: SPA con carga dinámica de módulos.
+- **MotionUtils**: animaciones encapsuladas con easings (`spring`, `smooth`, `bounce`, `sharp`).
+- **ModulePreloader**: caché LRU de 6 módulos con predicción y precarga diferida (1s).
+- **Carga de módulos optimizada**: limpieza automática del CSS del módulo anterior; scripts reutilizados vía sus funciones de init (no se recargan).
+- **Manejo de errores**: fallbacks de animaciones, visibilidad garantizada, `try-catch` en carga de JS.
+- **Lock de cajas**: un único doc en Firebase por vendedor evita duplicar cajas abiertas en multi-dispositivo.
+- **Cleanup de listeners**: cada módulo tiene `destroy()` que remueve sus listeners.
+- **Singleton por módulo**: destruye instancia anterior antes de crear nueva.
+- **Permisos graduales**: `window.authSystem.hasSubPermission(modulo, permiso)`. Admins tienen todo. Sub-permisos en `userData.subPermisos.{modulo}.{permiso}`.
 
-### Feature Specifications
-- **Módulos Principales**: Caja (apertura/cierre/movimientos), Ventas (punto de venta), Créditos, Inventario, Clientes, Usuarios, Pagos, Proveedores, Configuración, Reportes, Notas Internas.
-- **Módulo de Notas Internas** (módulo inicial después del login): Sistema de comunicación tipo "post-its de nevera" para recordatorios rápidos entre usuarios del equipo con:
-  - Tablero visual de notas adhesivas con colores personalizables (amarillo, rosa, verde, azul, naranja, morado)
-  - Efecto visual de rotación y sombra 3D simulando notas pegadas
-  - Prioridades: normal y urgente (con badge animado)
-  - Visibilidad configurable: todos, solo administradores, solo vendedores
-  - Sincronización en tiempo real con Firebase
-  - Sistema de "marcar como leída" para auto-eliminación cuando todos leen
-  - Opción de auto-eliminar después de 24 horas
-  - Filtros: todas, para mí, mis notas, urgentes
-  - Almacenado en colección Firebase `notas_internas`
-- **Módulo de Reportes**: Sistema completo de análisis y visualización de datos del negocio con:
-  - 4 pestañas: Resumen Ejecutivo, Ventas y Finanzas, Inventario y Suministros, Créditos y Clientes
-  - Gráficos interactivos con Chart.js (líneas, donuts, barras)
-  - KPIs principales: ventas totales, utilidad neta, transacciones, ticket promedio
-  - KPIs secundarios: Gastos Operativos y Utilidad Libre (lo que queda después de pagar gastos fijos)
-  - Resumen Financiero detallado: ingresos, costo de productos, utilidad bruta, desglose de gastos operativos (nómina, arriendo, servicios, otros), y utilidad neta final
-  - Gráfica "Utilidad vs Gastos Operativos" para comparar ganancia real contra gastos fijos
-  - Cálculo de utilidad: Las ventas ahora guardan el campo `utilidad` calculado en el momento de la venta, con fallback dinámico para ventas antiguas
-  - Gastos operativos: Solo se consideran gastos del módulo Pagos (nómina, arriendo, servicios, proveedores), NO compras de inventario
-  - Stock de productos: Usa getStockActual() para productos con variantes/opciones
-  - Filtros por período (hoy, ayer, semana, mes, trimestre, año, personalizado)
-  - Exportación a PDF, Excel/CSV e impresión
-  - Alertas del sistema (stock bajo, productos agotados, créditos vencidos)
-  - Diseño iOS-inspired con glassmorphism y animaciones fluidas
-- **Módulos Core**: `event-bus.js`, `module-manager.js`, `error-handler.js`, `form-validator.js`, `currency-formatter.js`, `motion-utils.js`, `module-preloader.js`, `skeleton-screen.js`.
+### Módulos
+Principales: Caja, Ventas (POS), Créditos, Inventario, Clientes, Usuarios, Pagos, Proveedores, Configuración, Reportes, Notas Internas.
 
-### System Design Choices
-- **Acceso a Firebase desde el Cliente**: Todas las interacciones con Firebase (Firestore y Auth) se realizan directamente desde el frontend, eliminando la necesidad de Firebase Admin SDK en el servidor.
-- **Arquitectura Basada en Módulos**: La aplicación está dividida en módulos independientes, cada uno con su propia lógica y UI, gestionados por un `ModuleManager`.
-- **Reglas de Seguridad de Firestore**: Reglas configuradas para permitir la lectura pública de datos esenciales (`users`, `configuracion`) en el login, mientras se mantiene la seguridad para el resto de la aplicación.
-- **Puerto Único**: El servidor expone el puerto 5000 para acceso web.
+**Notas Internas** (módulo inicial post-login): tablero tipo "post-its" con colores, prioridades (normal/urgente), visibilidad por rol (todos/admin/vendedor), sync real-time, "marcar como leída" para auto-eliminación, auto-eliminar 24 h, filtros (todas/para mí/mías/urgentes). Colección `notas_internas`.
+
+**Reportes**: 4 pestañas (Resumen, Ventas, Inventario, Créditos). Chart.js, KPIs (ventas, utilidad neta, gastos operativos, utilidad libre), filtros de período, export PDF/Excel/print, alertas (stock bajo, agotados, créditos vencidos). Diseño iOS glassmorphism. Las ventas guardan `utilidad` calculada al venderse (con fallback dinámico para ventas antiguas).
+
+**Core**: `event-bus.js`, `module-manager.js`, `error-handler.js`, `form-validator.js`, `currency-formatter.js`, `motion-utils.js`, `module-preloader.js`, `skeleton-screen.js`, `scanner.js`, `scanner-modal.js`, `bitacora-logger.js`, `pagos-helper.js`, `sesiones-activas.js`.
+
+### Decisiones de diseño
+- **Firebase desde el cliente**: sin Admin SDK en el servidor.
+- **Arquitectura por módulos** independientes gestionados por `ModuleManager`.
+- **Lector de códigos universal**: `window.scanner` con HID global (pistola USB/BT) + modal cámara (`BarcodeDetector` nativo con fallback ZXing self-hosted en `/vendor/zxing-browser.min.js`, precacheado por SW). Búsqueda tolerante (normalización, variantes UPC-A↔EAN-13, busca en producto/variante/opción/presentación de conversión). Optimizado para móvil: throttle 12 fps, crop central, resolución adaptativa, anti-duplicado 700 ms. Modos `simple` y `cadena` + asociación in-place. Integrado en Inventario, Ventas POS, Compras.
+- **Bitácora / Audit Log**: `window.bitacora.log({tipo, accion, detalle, nivel, gravedad})`. Sólo lectura por admin (reglas Firestore validan identidad vía `get()` contra `users`). Auto-limpieza por lotes con rate-limit 1/h. Hooks: anular venta, eliminar cliente/producto, cierre automático de caja.
+- **Sistema de Respaldos**: módulo admin-only, descarga JSON completo (Blob + URL.createObjectURL), registra en `respaldos_log` (inmutable). UI muestra estado (verde/amarillo>7d/rojo>14d) e historial de 30.
+- **Control de dispositivos por rol**: `sesiones_activas` con heartbeat 30 s, limpieza de zombies >5 min. Límites por defecto: admin 2, supervisor 2, vendedor 1 (override por usuario con `maxDispositivos`). Modal "demasiados dispositivos" + pantalla "Mis Dispositivos". Si Firestore falla, login normal continúa.
+- **Caché de módulos en memoria**: contenedores DOM con listeners Firebase vivos se guardan en `businessSystem.moduleContainers` (Map). Al volver: se mueve de `#module-cache` a `#main-content` con fade-in 0.18 s — sin re-lecturas. Hook `onResume()` disponible.
+- **Reglas Firestore**: lectura pública de `users` y `configuracion` para el login; resto protegido. Reglas de `/users/{userId}`: sólo admin crea/elimina y cambia rol; el dueño actualiza su propio doc pero NO el rol.
+- **Puerto único**: servidor en `5000`.
 
 ## External Dependencies
 
-- **Firebase Firestore**: Base de datos NoSQL para el almacenamiento de datos.
-  - Colecciones: `users`, `clients`, `products`, `categories`, `providers`, `sales`, `cajas`, `cajas_activas`, `abonos`, `pagos`, `configuracion`, `notas_internas`.
-- **Firebase Authentication**: Sistema de autenticación de usuarios.
-- **Node.js**: Entorno de ejecución para el servidor backend.
-- **Express.js**: Framework para el servidor web (sirve archivos estáticos).
+- **Firebase Firestore** — Base NoSQL.
+  - Colecciones: `users`, `clients`, `products`, `categories`, `providers`, `sales`, `cajas`, `cajas_activas`, `abonos`, `pagos`, `configuracion`, `notas_internas`, `sesiones_activas`, `respaldos_log`, `bitacora`.
+- **Firebase Authentication** — Autenticación de usuarios.
+- **Node.js** — Runtime del servidor.
+- **Express.js** — Sirve archivos estáticos.
+- **Chart.js** — Gráficos del módulo Reportes.
+- **ZXing (@zxing/browser)** — Fallback de decodificación de códigos (self-hosted).

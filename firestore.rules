@@ -17,11 +17,20 @@ service cloud.firestore {
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.personalInfo.rol == 'administrador';
     }
     
-    // Usuarios - Lectura pública para selector de emails en login
-    // Cualquier usuario autenticado puede editar usuarios (para gestión de permisos)
+    // Usuarios
+    // - read: público (necesario para selector de emails en login)
+    // - create/delete: solo admin (gestión desde módulo Usuarios)
+    // - update: admin O dueño-pero-sin-cambiarse-el-rol (anti-escalación de privilegios).
+    //   Esto garantiza que isAdmin() y la integridad de la bitácora no se puedan burlar
+    //   modificando el propio doc de usuario.
     match /users/{userId} {
       allow read: if true;
-      allow write: if isAuthenticated();
+      allow create: if isAdmin();
+      allow update: if isAdmin() || (
+        isOwner(userId)
+        && request.resource.data.personalInfo.rol == resource.data.personalInfo.rol
+      );
+      allow delete: if isAdmin();
     }
     
     // Productos
@@ -82,9 +91,10 @@ service cloud.firestore {
     }
     
     // Configuración - Lectura pública para nombre del negocio en login
+    // El doc 'bitacora' afecta integridad del audit log → SOLO admin puede modificarlo
     match /configuracion/{docId} {
       allow read: if true;
-      allow write: if isAuthenticated();
+      allow write: if isAuthenticated() && (docId != 'bitacora' || isAdmin());
     }
     
     // Abonos - Registro de pagos a créditos
@@ -172,6 +182,56 @@ service cloud.firestore {
       allow delete: if isAuthenticated();
     }
     
+    // Bitácora de actividad
+    // - Solo administradores la pueden LEER (datos sensibles)
+    // - CUALQUIER usuario autenticado puede CREAR (cualquier acción debe poder registrarse)
+    //   pero el nombre y el rol DEBEN coincidir con su documento real en /users
+    //   (no se puede falsificar identidad ni rol en los registros)
+    // - NADIE puede modificar registros (inmutabilidad)
+    // - Solo admin puede borrar (necesario para la auto-limpieza por retención)
+    match /bitacora/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAuthenticated()
+        && request.resource.data.usuarioId == request.auth.uid
+        && request.resource.data.keys().hasOnly(['fecha', 'usuarioId', 'usuarioNombre', 'usuarioRol', 'tipo', 'accion', 'detalle', 'gravedad', 'dispositivo'])
+        && request.resource.data.keys().hasAll(['fecha', 'usuarioId', 'tipo', 'accion'])
+        && request.resource.data.tipo is string
+        && request.resource.data.accion is string
+        && request.resource.data.usuarioRol == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.personalInfo.rol
+        && request.resource.data.usuarioNombre == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.personalInfo.nombre;
+      allow update: if false;
+      allow delete: if isAdmin();
+    }
+
+    // Respaldos Log - registro de respaldos descargados por administradores
+    // SOLO administradores pueden leer/crear. Sin update/delete (logs inmutables).
+    match /respaldos_log/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin()
+        && request.resource.data.usuarioId == request.auth.uid
+        && request.resource.data.keys().hasAll(['fecha', 'usuarioId', 'totalDocumentos'])
+        && request.resource.data.totalDocumentos is number;
+      allow update, delete: if false;
+    }
+
+    // Sesiones Activas - control de dispositivos por usuario
+    // doc id = `${userId}_${deviceId}`. El dueño puede crear/leer/actualizar/borrar
+    // sus propios docs (necesario para expulsar otros dispositivos suyos desde aquí).
+    match /sesiones_activas/{sesionId} {
+      allow read: if isAuthenticated()
+        && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.keys().hasAll(['userId', 'deviceId', 'deviceName', 'inicioSesion', 'ultimoLatido']);
+      allow update: if isAuthenticated()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated()
+        && resource.data.userId == request.auth.uid;
+      // Permitir listar sesiones propias (queries filtradas por userId)
+      allow list: if isAuthenticated();
+    }
+
     // Notas Internas - Sistema de post-its para comunicación del equipo
     match /notas_internas/{notaId} {
       allow read: if isAuthenticated();

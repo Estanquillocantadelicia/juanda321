@@ -15,6 +15,19 @@ firebase.initializeApp(firebaseConfig);
 // Inicializar Firestore
 const db = firebase.firestore();
 
+// Activar persistencia offline (cache local en IndexedDB)
+// Esto reduce drásticamente las lecturas de Firestore: los documentos ya leídos
+// se guardan en el dispositivo y solo se descargan los cambios nuevos.
+db.enablePersistence({ synchronizeTabs: true })
+  .then(() => console.log('✅ Firestore offline persistence activada'))
+  .catch((err) => {
+    if (err.code === 'failed-precondition') {
+      console.warn('⚠️ Persistencia no disponible (múltiples pestañas abiertas)');
+    } else if (err.code === 'unimplemented') {
+      console.warn('⚠️ Persistencia no soportada en este navegador');
+    }
+  });
+
 // Inicializar Authentication
 const auth = firebase.auth();
 

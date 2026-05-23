@@ -25,7 +25,9 @@ class BusinessManagementSystem {
             reportes: { title: 'Reportes', icon: '📊' },
             usuarios: { title: 'Usuarios', icon: '👥' },
             promociones: { title: 'Promociones', icon: '🏷️' },
-            configuracion: { title: 'Configuración', icon: '⚙️' }
+            configuracion: { title: 'Configuración', icon: '⚙️' },
+            respaldos: { title: 'Respaldos', icon: '💾' },
+            bitacora: { title: 'Bitácora de Actividad', icon: '📋' }
         };
 
         this.init();
@@ -52,6 +54,9 @@ class BusinessManagementSystem {
             await this.loadScript('./modules/core/error-handler.js');
             await this.loadScript('./modules/core/form-validator.js');
             await this.loadScript('./modules/core/currency-formatter.js');
+            await this.loadScript('./modules/core/bitacora-logger.js');
+            await this.loadScript('./modules/core/scanner.js');
+            await this.loadScript('./modules/core/scanner-modal.js');
         } catch (error) {
             console.error('Error cargando módulos centralizados:', error);
         }
@@ -417,7 +422,9 @@ class BusinessManagementSystem {
             usuarios: await this.getUsuariosTemplate(),
             promociones: this.getPromocionesTemplate(),
             notas: await this.getNotasTemplate(),
-            configuracion: this.getConfiguracionTemplate()
+            configuracion: this.getConfiguracionTemplate(),
+            respaldos: await this.getRespaldosTemplate(),
+            bitacora: await this.getBitacoraTemplate()
         };
 
         return moduleTemplates[moduleName] || this.getDefaultTemplate(module);
@@ -443,8 +450,6 @@ class BusinessManagementSystem {
 
             return `
                 <div class="module-container">
-                    <h1 class="module-title">🛒 Módulo de Ventas</h1>
-                    <p class="module-subtitle">Punto de Venta y Gestión de Transacciones</p>
                     ${moduleHTML}
                 </div>
             `;
@@ -452,8 +457,6 @@ class BusinessManagementSystem {
             console.error('Error al cargar módulo de ventas:', error);
             return `
                 <div class="module-container">
-                    <h1 class="module-title">🛒 Módulo de Ventas</h1>
-                    <p class="module-subtitle">Gestión completa de ventas y transacciones</p>
                     <p style="color: #FF3B30; margin-top: 20px;">Error al cargar el módulo. Verifique la conexión.</p>
                 </div>
             `;
@@ -711,6 +714,48 @@ class BusinessManagementSystem {
                 <p style="color: #6D6D80; margin-top: 20px;">Este módulo estará disponible próximamente con todas las funcionalidades de promociones.</p>
             </div>
         `;
+    }
+
+    async getRespaldosTemplate() {
+        try {
+            const moduleHTML = await this.loadModuleHTMLFromCache('respaldos');
+            this.loadModuleCSS('respaldos');
+
+            return `
+                <div class="module-container">
+                    ${moduleHTML}
+                </div>
+            `;
+        } catch (error) {
+            console.error('Error al cargar módulo de respaldos:', error);
+            return `
+                <div class="module-container">
+                    <h1 class="module-title">💾 Respaldos</h1>
+                    <p style="color: #FF3B30; margin-top: 20px;">Error al cargar el módulo. Verifique la conexión.</p>
+                </div>
+            `;
+        }
+    }
+
+    async getBitacoraTemplate() {
+        try {
+            const moduleHTML = await this.loadModuleHTMLFromCache('bitacora');
+            this.loadModuleCSS('bitacora');
+
+            return `
+                <div class="module-container">
+                    ${moduleHTML}
+                </div>
+            `;
+        } catch (error) {
+            console.error('Error al cargar módulo de bitácora:', error);
+            return `
+                <div class="module-container">
+                    <h1 class="module-title">📋 Bitácora</h1>
+                    <p style="color: #FF3B30; margin-top: 20px;">Error al cargar el módulo. Verifique la conexión.</p>
+                </div>
+            `;
+        }
     }
 
     async getNotasTemplate() {

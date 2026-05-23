@@ -1,5 +1,5 @@
-const CACHE_NAME = 'sistema-gestion-v4';
-const RUNTIME_CACHE = 'runtime-cache-v4';
+const CACHE_NAME = 'sistema-gestion-v53';
+const RUNTIME_CACHE = 'runtime-cache-v11';
 
 const CRITICAL_ASSETS = [
   '/',
@@ -19,7 +19,8 @@ const CRITICAL_ASSETS = [
   '/modules/core/motion-utils.js',
   '/modules/core/module-preloader.js',
   '/modules/core/skeleton-screen.js',
-  '/generated-icon.png'
+  '/generated-icon.png',
+  '/vendor/zxing-browser.min.js'
 ];
 
 self.addEventListener('install', (event) => {

@@ -7,18 +7,88 @@
     right: 0;
     bottom: 0;
     background: linear-gradient(135deg, 
-        rgba(0, 122, 255, 0.08) 0%, 
-        rgba(88, 86, 214, 0.06) 50%, 
-        rgba(102, 126, 234, 0.08) 100%);
+        #f0f4ff 0%, 
+        #e8eeff 40%, 
+        #f3f0ff 70%,
+        #eef4ff 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 12s ease infinite;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 10000;
-    backdrop-filter: blur(60px) saturate(180%) brightness(1.05);
-    -webkit-backdrop-filter: blur(60px) saturate(180%) brightness(1.05);
     padding: 20px;
     box-sizing: border-box;
     overflow: auto;
+    overflow-x: hidden;
+}
+
+@keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Orbes flotantes animados */
+.login-overlay::before,
+.login-overlay::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(70px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.login-overlay::before {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(0, 122, 255, 0.18) 0%, transparent 70%);
+    top: -120px;
+    left: -100px;
+    animation: orbFloat1 10s ease-in-out infinite;
+}
+
+.login-overlay::after {
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, rgba(88, 86, 214, 0.15) 0%, transparent 70%);
+    bottom: -100px;
+    right: -80px;
+    animation: orbFloat2 13s ease-in-out infinite;
+}
+
+@keyframes orbFloat1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%       { transform: translate(60px, 40px) scale(1.08); }
+    66%       { transform: translate(-30px, 70px) scale(0.94); }
+}
+
+@keyframes orbFloat2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%       { transform: translate(-70px, -50px) scale(1.1); }
+    66%       { transform: translate(40px, -30px) scale(0.92); }
+}
+
+/* Orbe adicional de acento */
+.login-orb-accent {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(52, 199, 89, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(60px);
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 0;
+    animation: orbFloat3 16s ease-in-out infinite;
+}
+
+@keyframes orbFloat3 {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50%       { transform: translate(-40%, -60%) scale(1.15); }
 }
 
 .login-container {
@@ -36,6 +106,7 @@
     max-width: 440px;
     border: 1px solid rgba(255, 255, 255, 0.6);
     position: relative;
+    z-index: 1;
     transform: translateZ(0);
     animation: loginSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -759,4 +830,169 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* ===== ANIMACIÓN DE ÉXITO EN LOGIN ===== */
+.login-container.login-success {
+    animation: loginSuccessPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
+    overflow: hidden;
+}
+
+@keyframes loginSuccessPop {
+    0%   { transform: scale(1); box-shadow: 0 40px 80px rgba(0,0,0,0.12), 0 20px 40px rgba(0,0,0,0.08); }
+    60%  { transform: scale(1.04); box-shadow: 0 24px 60px rgba(52,199,89,0.25), 0 0 0 6px rgba(52,199,89,0.15); }
+    100% { transform: scale(1.02); box-shadow: 0 24px 60px rgba(52,199,89,0.2), 0 0 0 4px rgba(52,199,89,0.12); }
+}
+
+.login-success-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    background: rgba(52, 199, 89, 0.06);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    z-index: 10;
+    animation: successOverlayIn 0.4s ease forwards;
+}
+
+@keyframes successOverlayIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.login-success-check {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, #34C759, #30D158);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px rgba(52,199,89,0.4), 0 0 0 12px rgba(52,199,89,0.12);
+    animation: checkBounce 0.5s 0.1s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes checkBounce {
+    from { transform: scale(0) rotate(-20deg); opacity: 0; }
+    to   { transform: scale(1) rotate(0deg);  opacity: 1; }
+}
+
+.login-success-check svg {
+    width: 36px;
+    height: 36px;
+    color: white;
+    stroke-dasharray: 50;
+    stroke-dashoffset: 50;
+    animation: drawCheck 0.4s 0.3s ease forwards;
+}
+
+@keyframes drawCheck {
+    to { stroke-dashoffset: 0; }
+}
+
+.login-success-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1C7C37;
+    animation: fadeInUp 0.4s 0.35s ease both;
+    text-align: center;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.login-overlay.fade-out {
+    animation: overlayFadeOut 0.5s ease forwards;
+}
+
+@keyframes overlayFadeOut {
+    from { opacity: 1; }
+    to   { opacity: 0; pointer-events: none; }
+}
+
+/* ===== AUTO-LOGOUT CIERRE DE CAJA ===== */
+.logout-countdown-section {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: rgba(255, 59, 48, 0.06);
+    border: 1.5px solid rgba(255, 59, 48, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logout-countdown-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.logout-countdown-text {
+    flex: 1;
+    font-size: 0.88rem;
+    color: #333;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.logout-countdown-num {
+    font-weight: 800;
+    color: #FF3B30;
+    font-size: 1rem;
+    display: inline-block;
+    min-width: 18px;
+    text-align: center;
+    animation: numPulse 1s ease infinite;
+}
+
+@keyframes numPulse {
+    0%, 100% { transform: scale(1); }
+    50%       { transform: scale(1.15); }
+}
+
+.logout-countdown-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.btn-logout-now {
+    flex: 1;
+    padding: 11px 16px;
+    background: linear-gradient(135deg, #FF3B30, #FF6482);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 4px 14px rgba(255,59,48,0.3);
+}
+
+.btn-logout-now:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255,59,48,0.4);
+}
+
+.btn-stay-session {
+    flex: 1;
+    padding: 11px 16px;
+    background: rgba(0,0,0,0.06);
+    color: #333;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-stay-session:hover {
+    background: rgba(0,0,0,0.1);
 }

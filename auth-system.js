@@ -72,6 +72,40 @@ class AuthenticationSystem {
 
             if (userDoc.exists) {
                 const userData = userDoc.data();
+
+                // === CONTROL DE DISPOSITIVOS ACTIVOS ===
+                // Aislado: si Firestore falla con este subsistema, NO bloquear login normal.
+                if (window.SesionesActivas) {
+                    try {
+                        const limite = window.SesionesActivas.obtenerLimiteUsuario(userData);
+                        const sesionesActuales = await window.SesionesActivas.listarSesionesActivas(user.uid);
+                        const miDeviceId = window.SesionesActivas.generarDeviceId();
+
+                        // Si este dispositivo ya tiene sesión registrada, no contarla doble
+                        const yaTengoSesion = sesionesActuales.some(s => s.deviceId === miDeviceId);
+
+                        if (!yaTengoSesion && sesionesActuales.length >= limite) {
+                            // Excede el límite: pedir al usuario qué hacer
+                            const accion = await this._pedirAccionLimiteDispositivos(sesionesActuales, limite);
+                            if (accion?.tipo === 'expulsar' && accion.deviceId) {
+                                await window.SesionesActivas.expulsarSesion(user.uid, accion.deviceId);
+                            } else {
+                                // Cancelar = cerrar este intento de login
+                                await window.auth.signOut();
+                                return;
+                            }
+                        }
+
+                        // Registrar este dispositivo y arrancar latido
+                        await window.SesionesActivas.registrarSesion(user, userData);
+                        window.SesionesActivas.iniciarHeartbeat(user.uid);
+                    } catch (sesErr) {
+                        // Error del subsistema de dispositivos NO debe romper login.
+                        console.warn('⚠️ Subsistema de dispositivos falló, continuando login:', sesErr);
+                    }
+                }
+                // === FIN CONTROL DE DISPOSITIVOS ===
+
                 this.currentUser = {
                     uid: user.uid,
                     email: user.email,
@@ -103,6 +137,78 @@ class AuthenticationSystem {
         }
     }
 
+    _pedirAccionLimiteDispositivos(sesiones, limite) {
+        return new Promise((resolve) => {
+            // Limpiar modal previo si existe
+            const prev = document.getElementById('modal-limite-dispositivos');
+            if (prev) prev.remove();
+
+            const fmtFecha = (ts) => {
+                try {
+                    const d = ts?.toDate ? ts.toDate() : new Date(ts);
+                    return d.toLocaleString('es-CO', { dateStyle: 'short', timeStyle: 'short' });
+                } catch { return '—'; }
+            };
+
+            const overlay = document.createElement('div');
+            overlay.id = 'modal-limite-dispositivos';
+            overlay.style.cssText = `
+                position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+                display: flex; align-items: center; justify-content: center;
+                z-index: 100000; padding: 16px;
+            `;
+
+            const sesionesHTML = sesiones.map((s, i) => `
+                <div style="display:flex; align-items:center; gap:12px; padding:12px; background:#F8F8FA; border-radius:10px; margin-bottom:8px; border:1px solid #E5E5EA;">
+                    <div style="flex:1;">
+                        <div style="font-weight:600; color:#1C1C1E;">${s.deviceName || 'Dispositivo'}</div>
+                        <div style="font-size:12px; color:#6D6D80;">Inició: ${fmtFecha(s.inicioSesion)}</div>
+                        <div style="font-size:12px; color:#6D6D80;">Última actividad: ${fmtFecha(s.ultimoLatido)}</div>
+                    </div>
+                    <button data-device-id="${s.deviceId}" class="btn-expulsar-dispositivo"
+                        style="padding:8px 14px; background:#FF3B30; color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer;">
+                        Cerrar este
+                    </button>
+                </div>
+            `).join('');
+
+            overlay.innerHTML = `
+                <div style="background:white; border-radius:16px; max-width:480px; width:100%; max-height:90vh; overflow:auto; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+                    <div style="padding:20px; border-bottom:1px solid #E5E5EA;">
+                        <h3 style="margin:0 0 6px 0; font-size:18px; color:#1C1C1E;">⚠️ Demasiados dispositivos abiertos</h3>
+                        <p style="margin:0; font-size:14px; color:#6D6D80;">
+                            Tu cuenta ya tiene ${sesiones.length} de ${limite} dispositivos permitidos.
+                            Cierra uno para poder entrar desde aquí.
+                        </p>
+                    </div>
+                    <div style="padding:16px;">
+                        ${sesionesHTML}
+                    </div>
+                    <div style="padding:14px 20px; border-top:1px solid #E5E5EA; display:flex; justify-content:flex-end;">
+                        <button id="btn-cancelar-limite" style="padding:10px 18px; background:#E5E5EA; color:#1C1C1E; border:none; border-radius:10px; font-weight:600; cursor:pointer;">
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(overlay);
+
+            overlay.querySelectorAll('.btn-expulsar-dispositivo').forEach(btn => {
+                btn.onclick = () => {
+                    const deviceId = btn.dataset.deviceId;
+                    overlay.remove();
+                    resolve({ tipo: 'expulsar', deviceId });
+                };
+            });
+
+            document.getElementById('btn-cancelar-limite').onclick = () => {
+                overlay.remove();
+                resolve({ tipo: 'cancelar' });
+            };
+        });
+    }
+
     _startPermissionWatcher(uid) {
         // Cancelar listener anterior si existe
         if (this._userDocUnsubscribe) {
@@ -111,6 +217,19 @@ class AuthenticationSystem {
         }
 
         let initialLoad = true;
+        const loginTimestamp = Date.now();
+        let reloadPending = false;
+
+        // Serialización estable independiente del orden de claves
+        const stableStringify = (obj) => {
+            if (typeof obj !== 'object' || obj === null) return JSON.stringify(obj);
+            return JSON.stringify(Object.keys(obj).sort().reduce((acc, k) => {
+                acc[k] = (typeof obj[k] === 'object' && obj[k] !== null)
+                    ? JSON.parse(stableStringify(obj[k]))
+                    : obj[k];
+                return acc;
+            }, {}));
+        };
 
         this._userDocUnsubscribe = window.db.collection('users').doc(uid).onSnapshot((doc) => {
             // Ignorar el primer disparo (datos iniciales ya cargados)
@@ -121,19 +240,21 @@ class AuthenticationSystem {
 
             if (!doc.exists || !this.isAuthenticated) return;
 
+            // No recargar si la sesión tiene menos de 15 segundos (evitar falsos positivos al inicio)
+            if (Date.now() - loginTimestamp < 15000) return;
+
             const data = doc.data();
             const nuevosPermisos = data.permissions || {};
             const nuevoRol = data.personalInfo?.rol;
             const rolActual = this.currentUser?.rol;
 
-            // Detectar si hubo cambio real en permisos o rol
-            const permisosStr = JSON.stringify(nuevosPermisos);
-            const permisosActualesStr = JSON.stringify(this.userPermissions);
-            const cambioPermisos = permisosStr !== permisosActualesStr;
+            // Comparación estable (independiente del orden de claves en el objeto)
+            const cambioPermisos = stableStringify(nuevosPermisos) !== stableStringify(this.userPermissions);
             const cambioRol = nuevoRol && nuevoRol !== rolActual;
 
-            if (cambioPermisos || cambioRol) {
-                console.log('🔄 Cambio de permisos detectado, recargando sesión...');
+            if ((cambioPermisos || cambioRol) && !reloadPending) {
+                reloadPending = true;
+                console.log('🔄 Cambio real de permisos/rol detectado, recargando sesión...');
                 if (window.eventBus) {
                     window.eventBus.emit(window.APP_EVENTS?.NOTIFICATION_SHOW || 'notification:show', {
                         message: 'Tu perfil fue actualizado por un administrador. Recargando...',
@@ -151,6 +272,10 @@ class AuthenticationSystem {
         if (this._userDocUnsubscribe) {
             this._userDocUnsubscribe();
             this._userDocUnsubscribe = null;
+        }
+        // Detener heartbeat de sesión activa (cualquier ruta de signOut)
+        if (window.SesionesActivas) {
+            try { window.SesionesActivas.detenerHeartbeat(); } catch (e) {}
         }
         this.currentUser = null;
         this.userPermissions = {};
@@ -349,8 +474,9 @@ class AuthenticationSystem {
                                     type="password" 
                                     id="login-password" 
                                     name="password"
-                                    autocomplete="current-password"
+                                    autocomplete="new-password"
                                     placeholder="••••••••"
+                                    value=""
                                     required
                                 >
                                 <button type="button" class="toggle-password" id="toggle-password">
@@ -399,6 +525,12 @@ class AuthenticationSystem {
         `;
 
         document.body.appendChild(overlay);
+
+        // Agregar orbe de acento animado al fondo
+        const orbAccent = document.createElement('div');
+        orbAccent.className = 'login-orb-accent';
+        overlay.appendChild(orbAccent);
+
         this.handleMobileKeyboardZoom();
         this.setupLoginEventListeners();
     }
@@ -439,15 +571,44 @@ class AuthenticationSystem {
 
     hideLoginScreen() {
         const loginOverlay = document.querySelector('.login-overlay');
-        if (loginOverlay) {
-            loginOverlay.style.display = 'none';
-        }
+        const loginContainer = document.getElementById('login-container');
 
         const sidebar = document.getElementById('sidebar');
         const mainContainer = document.querySelector('.main-container');
 
-        if (sidebar) sidebar.style.display = 'flex';
-        if (mainContainer) mainContainer.style.display = 'flex';
+        if (loginOverlay && loginContainer) {
+            // Añadir animación de éxito
+            loginContainer.classList.add('login-success');
+
+            const successOverlay = document.createElement('div');
+            successOverlay.className = 'login-success-overlay';
+            successOverlay.innerHTML = `
+                <div class="login-success-check">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div class="login-success-text">¡Bienvenido!</div>
+            `;
+            loginContainer.appendChild(successOverlay);
+
+            // Revelar la app detrás
+            if (sidebar) sidebar.style.display = 'flex';
+            if (mainContainer) mainContainer.style.display = 'flex';
+
+            // Fade out del overlay después de la animación
+            setTimeout(() => {
+                loginOverlay.classList.add('fade-out');
+                setTimeout(() => {
+                    loginOverlay.style.display = 'none';
+                    loginOverlay.classList.remove('fade-out');
+                }, 500);
+            }, 800);
+        } else {
+            if (loginOverlay) loginOverlay.style.display = 'none';
+            if (sidebar) sidebar.style.display = 'flex';
+            if (mainContainer) mainContainer.style.display = 'flex';
+        }
     }
 
     setupLoginEventListeners() {
@@ -911,6 +1072,16 @@ class AuthenticationSystem {
                     }
                 } catch (error) {
                     console.warn('Error verificando estado de caja:', error);
+                }
+            }
+
+            // Cerrar mi propia sesión activa de este dispositivo
+            if (window.SesionesActivas) {
+                window.SesionesActivas.detenerHeartbeat();
+                try {
+                    await window.SesionesActivas.cerrarSesion(userId);
+                } catch (e) {
+                    console.warn('No se pudo borrar sesión activa:', e);
                 }
             }
         }
